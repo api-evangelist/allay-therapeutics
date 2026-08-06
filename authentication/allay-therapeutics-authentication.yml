@@ -1,0 +1,92 @@
+generated: '2026-08-06'
+method: derived
+source: openapi/allay-therapeutics-content-openapi.yml + live anonymous probes of https://www.allaytx.com/wp-json
+summary:
+  types: []
+  api_key_in: []
+  oauth2_flows: []
+  public_read: true
+note: >-
+  The Allay Therapeutics content API declares no security schemes and requires no credentials for
+  any operation catalogued in this repo. The WordPress REST index at /wp-json/ advertises exactly
+  one authentication method — WordPress application passwords, with an authorization endpoint at
+  https://www.allaytx.com/wp-admin/authorize-application.php — which is an administrative CMS
+  sign-in flow for site editors, not a consumer API credential: there is no self-service signup, no
+  key issuance, no scopes and no documentation. Allay Therapeutics publishes no developer
+  authentication documentation because it runs no developer program; the read surface is simply
+  open.
+schemes: []
+advertised_by_index:
+- method: application-passwords
+  mechanism: HTTP Basic with an admin-issued application password
+  authorization_endpoint: https://www.allaytx.com/wp-admin/authorize-application.php
+  consumer_available: false
+  detail: >-
+    WordPress core's application-password flow. Requires an existing WordPress user account on this
+    site; there is no public registration path. Not modelled as an OpenAPI securityScheme because
+    no catalogued operation accepts or requires it.
+anonymous_access:
+  readable:
+  - GET /
+  - GET /wp/v2/posts
+  - GET /wp/v2/posts/{id}
+  - GET /wp/v2/pages
+  - GET /wp/v2/pages/{id}
+  - GET /wp/v2/media
+  - GET /wp/v2/media/{id}
+  - GET /wp/v2/categories
+  - GET /wp/v2/categories/{id}
+  - GET /wp/v2/tags
+  - GET /wp/v2/tags/{id}
+  - GET /wp/v2/comments
+  - GET /wp/v2/search
+  - GET /wp/v2/types
+  - GET /wp/v2/taxonomies
+  - GET /wp/v2/statuses
+  - GET /oembed/1.0/embed
+  gated:
+  - path: /wp/v2/settings
+    status: 401
+    code: rest_forbidden
+  - path: /wp/v2/menus
+    status: 401
+    code: rest_cannot_view
+  - path: /wp/v2/themes
+    status: 401
+    code: rest_cannot_view_themes
+  - path: /wp/v2/plugins
+    status: 401
+    code: rest_cannot_view_plugins
+  - path: /wp/v2/block-types
+    status: 401
+    code: rest_block_type_cannot_view
+  - path: /wp/v2/font-collections
+    status: 401
+    code: rest_cannot_read
+  - path: /wp/v2/icons
+    status: 401
+    code: rest_cannot_view
+  - path: /wp-abilities/v1/abilities
+    status: 401
+    code: rest_forbidden
+    note: >-
+      WordPress core's agent-capability registry. Gated, so no MCP or agent-tool surface is claimed
+      for this provider.
+  open_but_excluded:
+  - path: /wp/v2/users
+    status: 200
+    detail: >-
+      Author enumeration is left open on this deployment — the collection returns 7 author records
+      anonymously. Recorded as an observed exposure, deliberately not modelled as an operation and
+      deliberately not packaged as an agent skill or MCP tool. No individual is named in this
+      repository.
+  write_operations: >-
+    Every POST/PUT/PATCH/DELETE route in the 196-route index requires an authenticated WordPress
+    user. None were exercised — the pipeline reads only.
+x-evidence:
+  probed: '2026-08-06'
+  index: https://www.allaytx.com/wp-json/
+  index_authentication_field:
+    application-passwords:
+      endpoints:
+        authorization: https://www.allaytx.com/wp-admin/authorize-application.php

@@ -1,0 +1,118 @@
+generated: '2026-08-06'
+method: derived
+source: openapi/allay-therapeutics-content-openapi.yml + live response headers observed 2026-08-06
+note: >-
+  Cross-cutting request/response semantics of the Allay Therapeutics content API. Allay Therapeutics
+  publishes no API conventions documentation of its own; everything below is the WordPress REST
+  contract as it is actually deployed at https://www.allaytx.com/wp-json, derived from the route
+  index and confirmed against live anonymous responses. Idempotency is deliberately NOT claimed —
+  this deployment exposes no idempotency key, no request-deduplication contract, and no anonymous
+  write surface at all, so no `Idempotency` pointer is emitted in apis.yml.
+authentication:
+  style: none
+  detail: >-
+    No credentials are required for any catalogued operation. The /wp-json/ index advertises exactly
+    one authentication method — WordPress application passwords, with an authorization endpoint at
+    /wp-admin/authorize-application.php — which is an administrative sign-in flow for the CMS, not a
+    consumer API credential. See authentication/allay-therapeutics-authentication.yml.
+idempotency:
+  supported: false
+  header: null
+  detail: >-
+    No Idempotency-Key header, no client-supplied request identifier, and no documented replay
+    semantics. Every catalogued operation is a GET and therefore idempotent by HTTP method alone,
+    which is not an idempotency contract.
+pagination:
+  style: page-number
+  params:
+    page: Current page of the collection (1-based).
+    per_page: Items per page. Minimum 1, maximum 100, default 10.
+    offset: Alternative absolute offset into the result set.
+  response_headers:
+    X-WP-Total: Total number of matching items.
+    X-WP-TotalPages: Total number of pages available.
+  link_header: >-
+    RFC 8288 Link header carrying rel="next" and rel="prev". Observed on /wp/v2/posts?per_page=1 as
+    <https://www.allaytx.com/wp-json/wp/v2/posts?per_page=1&page=2>; rel="next".
+  cors_exposure: >-
+    Access-Control-Expose-Headers advertises X-WP-Total, X-WP-TotalPages and Link, so browser
+    clients can read the pagination headers cross-origin.
+  bounds_error: >-
+    per_page above 100 returns 400 rest_invalid_param with a per-parameter details block, not a
+    clamp.
+  count_caveat: >-
+    X-WP-Total is the unfiltered count and can exceed what an anonymous caller actually receives.
+    On /wp/v2/media the header reports 161 attachments while the collection returns a single item.
+field_selection:
+  supported: true
+  params:
+    _fields: Comma-separated allow-list of top-level response fields.
+    _embed: Inline embeddable resources (author, featured media, terms) under _embedded.
+    _envelope: Wrap the response body, status and headers in a single JSON envelope.
+  context:
+    param: context
+    values: [view, embed, edit]
+    detail: Anonymously only `view` and `embed` return data; `edit` requires an authenticated user.
+sorting_and_filtering:
+  order: asc | desc (default desc)
+  orderby: Per-collection enum — date, id, title, slug, modified, author, include, relevance, menu_order.
+  date_windows: after, before, modified_after, modified_before (ISO 8601).
+  identity: include / exclude / slug.
+  full_text: search, plus the dedicated /wp/v2/search cross-content endpoint.
+  taxonomy: categories, categories_exclude, tags, tags_exclude.
+metadata:
+  field: meta
+  detail: >-
+    A `meta` object is present on every post-like resource but only registered meta keys are
+    exposed; no custom keys are surfaced anonymously on this deployment.
+  extensions_observed:
+  - yoast_head and yoast_head_json — rendered and structured Yoast SEO metadata, including a
+    schema.org graph, inlined on every post and page.
+  - class_list — the CSS class list WordPress would render for the object.
+request_tracing:
+  request_id_header: null
+  detail: >-
+    No provider request identifier is returned. The only correlation-adjacent headers are WP Engine
+    cache markers (x-cache, x-cache-group, x-cacheable), which are edge state rather than an
+    application-level correlation id.
+versioning:
+  scheme: uri-path-namespace
+  current: wp/v2
+  detail: >-
+    Version is carried in the route namespace (wp/v2, oembed/1.0, wp-site-health/v1,
+    wp-block-editor/v1, wp-abilities/v1). Allay Therapeutics does not version this surface itself;
+    it moves when WordPress core and the installed plugins move. See
+    lifecycle/allay-therapeutics-lifecycle.yml.
+error_envelope:
+  format: wordpress-rest
+  rfc9457: false
+  content_type: application/json
+  shape: '{ code: string, message: string, data: { status: int, params?: object, details?: object } }'
+  detail: >-
+    Not RFC 9457 problem+json — there is no `type` URI and no problem+json media type. See
+    errors/allay-therapeutics-problem-types.yml.
+rate_limiting:
+  signaled: false
+  headers: []
+  detail: >-
+    No RateLimit-* or X-RateLimit-* headers are returned on /wp-json responses, and no 429 was
+    observed during this pass. robots.txt advertises Crawl-delay: 10, which is the only published
+    pacing signal.
+caching:
+  cache_control: 'max-age=600, must-revalidate on /wp-json collection responses'
+  headers_observed: [x-cacheable, x-cache, x-cache-group]
+  detail: 'WP Engine object cache in front of an nginx origin. Responses carry x-robots-tag: noindex.'
+security_headers_observed:
+  strict_transport_security: max-age=63072000
+  content_security_policy: "default-src 'self' 'unsafe-inline' 'unsafe-eval' data: blob: about: *;"
+  x_content_type_options: nosniff
+  x_frame_options: SAMEORIGIN
+  referrer_policy: strict-origin-when-cross-origin
+  permissions_policy: geolocation=(), midi=(), microphone=(), camera=(), magnetometer=(), gyroscope=(), fullscreen=(self), payment=()
+cross_links:
+  authentication: authentication/allay-therapeutics-authentication.yml
+  errors: errors/allay-therapeutics-problem-types.yml
+  lifecycle: lifecycle/allay-therapeutics-lifecycle.yml
+  data_model: data-model/allay-therapeutics-data-model.yml
+  conformance: conformance/allay-therapeutics-conformance.yml
+  domain_security: security/allay-therapeutics-domain-security.yml

@@ -1,0 +1,66 @@
+overlay: 1.0.0
+info:
+  title: API Evangelist enhancements for the Allay Therapeutics Content API
+  version: 1.0.0
+extends: openapi/allay-therapeutics-content-openapi.yml
+x-generated: '2026-08-06'
+x-method: generated
+x-source: >-
+  The enhancements the API Evangelist enrichment pipeline layered on top of the WordPress REST route
+  index published at https://www.allaytx.com/wp-json/ on 2026-08-06. Allay Therapeutics publishes no
+  OpenAPI, so the base document is itself a derivation; this overlay records which parts of it are
+  API Evangelist editorial (titles, tags, deployment-specific counts, error examples, the
+  privacy-motivated exclusion) rather than mechanical transcription of the route index.
+actions:
+  - target: $.info
+    description: Record the profile provenance and rating context on the document root.
+    update:
+      x-apievangelist-profile: https://apis.io/provider/allay-therapeutics/
+      x-apievangelist-repository: https://github.com/api-evangelist/allay-therapeutics
+      x-apievangelist-derivation: >-
+        Derived from the live WordPress REST route index; not a provider publication. Allay
+        Therapeutics has not reviewed or endorsed this document.
+      x-apievangelist-surface-class: incidental-cms
+      x-apievangelist-surface-note: >-
+        This is the company website's own content API, not a product API. Allay Therapeutics is a
+        clinical-stage drug developer with no developer program, no API documentation, and no
+        developer portal.
+
+  - target: $.servers
+    description: Note that the production server is the marketing site origin, behind WP Engine.
+    update:
+      - url: https://www.allaytx.com/wp-json
+        description: Production content API
+        x-apievangelist-host-note: >-
+          The marketing-site origin. api./developer./docs./portal.allaytx.com are all NXDOMAIN — this
+          is the only host serving an API.
+
+  - target: $.tags
+    description: Attribute the deployment-specific tag descriptions to API Evangelist.
+    update:
+      - name: posts
+        x-apievangelist-note: >-
+          Counts and the 2021-05-13 to 2025-06-05 date range were read from live responses and the
+          X-WP-Total header on 2026-08-06, not from any provider documentation.
+
+  - target: $.paths['/wp/v2/media'].get
+    description: Flag the divergence between the advertised total and the anonymous result set.
+    update:
+      x-apievangelist-anomaly: >-
+        X-WP-Total reports 161 attachments while the anonymous collection returns exactly one
+        (id 1503). Treat X-WP-Total on this endpoint as an upper bound, not a result count.
+
+  - target: $.components.schemas.Post.properties.author
+    description: Mark the author reference as intentionally non-traversable in this profile.
+    update:
+      x-apievangelist-privacy: >-
+        Integer reference into /wp/v2/users. That collection answers anonymously on this deployment
+        (WordPress author enumeration is open), but it is deliberately excluded from this profile —
+        not modelled as an operation, not packaged as an agent skill, and no individual named.
+
+  - target: $.components.schemas.Error
+    description: State explicitly that the error contract is not RFC 9457.
+    update:
+      x-apievangelist-error-format: wordpress-rest
+      x-apievangelist-rfc9457: false
+      x-apievangelist-catalog: errors/allay-therapeutics-problem-types.yml

@@ -1,0 +1,40 @@
+generated: '2026-08-06'
+method: generated
+source: openapi/allay-therapeutics-content-openapi.yml
+note: >-
+  Packaged agent skills for the only public API surface Allay Therapeutics exposes — the WordPress
+  REST content API behind www.allaytx.com. Every operationId referenced below exists verbatim in
+  openapi/allay-therapeutics-content-openapi.yml. Allay Therapeutics publishes no AGENTS.md and no
+  provider-authored skills; these are API Evangelist generations.
+skills:
+- file: allay-therapeutics-track-press-releases.md
+  name: Track Allay Therapeutics press releases
+  api: openapi/allay-therapeutics-content-openapi.yml
+  operations: [listCategories, listPosts, getPost]
+- file: allay-therapeutics-read-pipeline-and-science.md
+  name: Read the Allay Therapeutics pipeline and science pages
+  api: openapi/allay-therapeutics-content-openapi.yml
+  operations: [listPages, getPage]
+- file: allay-therapeutics-search-and-resolve.md
+  name: Search Allay Therapeutics content and resolve a hit
+  api: openapi/allay-therapeutics-content-openapi.yml
+  operations: [searchContent, getPost, getPage, listTypes]
+excluded:
+- surface: /wp/v2/users
+  status_observed: 200
+  reason: >-
+    WordPress author enumeration is left open on this deployment and returns 7 author records
+    anonymously. No skill is packaged for it and no MCP tool is emitted. Documenting that an
+    unauthenticated endpoint exposes staff records is legitimate research; shipping working
+    paginated access to it is not. The omission is deliberate, not an oversight.
+- surface: /wp/v2/media
+  status_observed: 200
+  reason: >-
+    Not worth a skill. X-WP-Total reports 161 attachments but the anonymous collection returns a
+    single item, so a media-harvest skill would mislead about what is actually reachable. The
+    endpoint stays in the OpenAPI with the divergence documented.
+- surface: wp-abilities/v1
+  status_observed: 401
+  reason: >-
+    WordPress core's agent-capability registry is registered but returns 401 rest_forbidden
+    anonymously, so no agent-tool or MCP surface is claimed for this provider.

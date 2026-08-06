@@ -1,0 +1,76 @@
+generated: '2026-08-06'
+method: probed
+source: live GETs against https://www.allaytx.com on 2026-08-06
+host: https://www.allaytx.com
+note: >-
+  No /.well-known/ document is served by allaytx.com. Every path below returned 404 with a
+  text/html body — the WordPress themed 404 page, not a JSON or text document — so there is no
+  false-positive risk from an SPA catch-all. Recorded because absence is valid, evidenced data:
+  this provider publishes no RFC 9116 security contact, no OAuth/OIDC discovery, no RFC 9727
+  api-catalog, no ai-plugin manifest and no A2A agent card. api.allaytx.com, developer.allaytx.com,
+  docs.allaytx.com, trust.allaytx.com and status.allaytx.com are all NXDOMAIN, so www.allaytx.com is
+  the only host with a /.well-known/ namespace to probe.
+documents:
+- path: /.well-known/security.txt
+  spec: RFC 9116
+  status: 404
+  content_type: text/html
+- path: /security.txt
+  spec: RFC 9116 (legacy location)
+  status: 404
+  content_type: text/html
+- path: /.well-known/openid-configuration
+  spec: OpenID Connect Discovery 1.0
+  status: 404
+  content_type: text/html
+- path: /.well-known/oauth-authorization-server
+  spec: RFC 8414
+  status: 404
+  content_type: text/html
+- path: /.well-known/api-catalog
+  spec: RFC 9727
+  status: 404
+  content_type: text/html
+- path: /.well-known/ai-plugin.json
+  spec: OpenAI plugin manifest
+  status: 404
+  content_type: text/html
+- path: /.well-known/agent-card.json
+  spec: A2A 1.0.0
+  status: 404
+  content_type: text/html
+- path: /.well-known/agent.json
+  spec: A2A pre-0.3 legacy
+  status: 404
+  content_type: text/html
+- path: /llms.txt
+  spec: llms.txt
+  status: 404
+  content_type: text/html
+other_discovery_probed:
+- path: /openapi.json
+  status: 404
+  content_type: text/html
+- path: /swagger.json
+  status: 404
+  content_type: text/html
+- path: /api-docs
+  status: 404
+  content_type: text/html
+- path: /graphql
+  status: 404
+  content_type: text/html
+- path: /wp-json/
+  status: 200
+  content_type: application/json
+  note: >-
+    The only machine-readable index on the host — the WordPress REST route table (196 routes, 10
+    namespaces). Catalogued as openapi/allay-therapeutics-content-openapi.yml.
+- path: /robots.txt
+  status: 200
+  content_type: text/plain
+  note: 'Allows all agents; advertises Crawl-delay: 10 and the Yoast sitemap index.'
+- path: /sitemap_index.xml
+  status: 200
+  content_type: text/xml
+  note: Yoast sitemap index — post-sitemap.xml, page-sitemap.xml, category-sitemap.xml.

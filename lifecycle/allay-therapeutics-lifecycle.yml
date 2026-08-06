@@ -1,0 +1,62 @@
+generated: '2026-08-06'
+method: derived
+source: openapi/allay-therapeutics-content-openapi.yml + live probes of https://www.allaytx.com on 2026-08-06
+note: >-
+  Lifecycle posture of the only public API surface Allay Therapeutics exposes. The company runs no
+  developer program, so there is no published versioning policy, no deprecation policy, no SLA and
+  no status page. Everything below is observed rather than asserted by the provider. NO
+  `StatusPage` and NO `Deprecation` pointer is emitted in apis.yml, because neither exists.
+versioning:
+  scheme: uri-path-namespace
+  current: wp/v2
+  policy_url: null
+  detail: >-
+    The version is the WordPress REST namespace. Allay Therapeutics does not version this surface —
+    it moves when WordPress core and the installed plugins move. The upstream contract is defined at
+    https://developer.wordpress.org/rest-api/.
+  namespaces_observed:
+  - oembed/1.0
+  - wpe/cache-plugin/v1
+  - wpe_sign_on_plugin/v1
+  - yoast/v1
+  - duplicate-post/v1
+  - monsterinsights/v1
+  - wp/v2
+  - wp-site-health/v1
+  - wp-block-editor/v1
+  - wp-abilities/v1
+deprecation:
+  policy_url: null
+  sunset_header: false
+  deprecation_header: false
+  detail: >-
+    No RFC 8594 Sunset or Deprecation headers were returned on any probed response, and no
+    deprecation policy is published. No operation in the derived OpenAPI is marked deprecated.
+deprecated_operations: []
+sla:
+  url: null
+  uptime_target: null
+  detail: No service level agreement is published for this surface.
+status_page: null
+status_page_probe:
+  - url: https://status.allaytx.com/
+    result: NXDOMAIN (curl exit 6, could not resolve host)
+    checked: '2026-08-06'
+changelog:
+  url: null
+  detail: >-
+    No API changelog. The company news archive at https://www.allaytx.com/news/ is a corporate press
+    archive (19 posts, 2021-05-13 through 2025-06-05), not a release log for this surface, so no
+    ChangeLog pointer is emitted.
+content_freshness:
+  newest_post: '2025-06-05'
+  oldest_post: '2021-05-13'
+  page_sitemap_lastmod: '2026-03-18'
+  post_sitemap_lastmod: '2025-06-05'
+  detail: >-
+    The corporate pages were last touched 2026-03-18; the news archive has not been added to since
+    the June 2025 Series D announcement.
+tls:
+  cert_expires: 'Oct 27 14:24:26 2026 GMT'
+  tls_version: TLSv1.3
+  source: security/allay-therapeutics-domain-security.yml

@@ -1,0 +1,166 @@
+generated: '2026-08-06'
+method: derived
+source: openapi/allay-therapeutics-content-openapi.yml + live anonymous responses observed 2026-08-06
+note: >-
+  Entity-relationship graph derived from the schema $refs and the id-reference fields in the Allay
+  Therapeutics content OpenAPI. Identifiers are plain auto-increment integers — WordPress uses no
+  prefixed id scheme — and every relationship below was confirmed against a live response. The User
+  entity is described structurally only: see the PII note under `excluded`.
+identifiers:
+  scheme: integer
+  detail: >-
+    All objects share one wp_posts identifier space: posts, pages and media attachments cannot
+    collide. Taxonomy terms live in a separate term space, so a category id and a post id may share
+    a number.
+entities:
+- name: Post
+  collection: /wp/v2/posts
+  operations: [listPosts, getPost]
+  count_observed: 19
+  description: >-
+    A news item. On this deployment the collection is the company press archive, spanning
+    2021-05-13 (launch with first clinical data) to 2025-06-05 (the $57.5M Series D and venture debt
+    line). Content is split across three categories: Press Releases, In The News, and Presentations
+    and Publications.
+  key_fields: [id, slug, title, content, excerpt, date, modified, status, link, categories, tags, author, featured_media]
+- name: Page
+  collection: /wp/v2/pages
+  operations: [listPages, getPage]
+  count_observed: 9
+  description: >-
+    A corporate page. Published slugs and ids at harvest: home (632), about-us (636),
+    our-science (644), pipeline (653), news (661), careers (664), contact-us (666),
+    privacy-policy (937), terms-of-service (941).
+  key_fields: [id, slug, title, content, parent, menu_order, date, modified, link, featured_media]
+- name: Attachment
+  collection: /wp/v2/media
+  operations: [listMedia, getMedia]
+  count_observed: 161
+  count_readable_anonymously: 1
+  description: >-
+    A media library attachment. X-WP-Total reports 161, but the anonymous collection returns a
+    single item (id 1503); the remainder are attached to non-public parents and are filtered out of
+    the anonymous view.
+  key_fields: [id, slug, title, source_url, mime_type, media_type, media_details, post, alt_text]
+- name: Term
+  collection: /wp/v2/categories and /wp/v2/tags
+  operations: [listCategories, getCategory, listTags, getTag]
+  count_observed: 7
+  description: >-
+    A taxonomy term. Four categories are registered — Press Releases (id 5, 14 posts), In The News
+    (id 10, 4), Presentations and Publications (id 23, 1), Uncategorized (id 1, 0). The post_tag
+    taxonomy carries three unused placeholder terms (Lorem, Ipsum, Dolor), all count 0.
+  key_fields: [id, slug, name, taxonomy, parent, count, link]
+- name: SearchResult
+  collection: /wp/v2/search
+  operations: [searchContent]
+  description: >-
+    A lightweight pointer returned by cross-content search — not a stored entity. Must be resolved
+    back to a Post or Page by its id and subtype. A search for "pain" returned 25 hits at harvest.
+  key_fields: [id, title, url, type, subtype]
+- name: PostType
+  collection: /wp/v2/types
+  operations: [listTypes, getType]
+  count_observed: 11
+  description: >-
+    A registered content type. WordPress core only on this deployment — post, page, attachment,
+    nav_menu_item, wp_block, wp_template, wp_template_part, wp_global_styles, wp_navigation,
+    wp_font_family, wp_font_face. No custom post types are registered.
+  key_fields: [slug, name, rest_base, rest_namespace, taxonomies, hierarchical]
+- name: Taxonomy
+  collection: /wp/v2/taxonomies
+  operations: [listTaxonomies, getTaxonomy]
+  count_observed: 4
+  description: 'A registered taxonomy — category, post_tag, nav_menu, wp_pattern_category.'
+  key_fields: [slug, name, types, rest_base, hierarchical]
+- name: PostStatus
+  collection: /wp/v2/statuses
+  operations: [listStatuses, getStatus]
+  count_observed: 2
+  description: 'A publicly queryable post status — publish, and acf-disabled (registered by Advanced Custom Fields).'
+  key_fields: [slug, name, public, queryable]
+- name: User
+  collection: /wp/v2/users
+  operations: []
+  description: >-
+    The author entity. Structurally, Post.author and Page.author are integer references into this
+    collection. NOT MODELLED as an operation — see `excluded` below.
+  key_fields: []
+relationships:
+- from: Post
+  to: Term
+  type: has_many
+  via: categories
+  detail: Array of category term ids; resolve with GET /wp/v2/categories/{id}.
+- from: Post
+  to: Term
+  type: has_many
+  via: tags
+  detail: Array of post_tag term ids. Always empty on this deployment.
+- from: Post
+  to: Attachment
+  type: has_one
+  via: featured_media
+  detail: Integer attachment id, 0 when unset.
+- from: Post
+  to: User
+  type: belongs_to
+  via: author
+  detail: >-
+    Integer user id. Deliberately not traversed by this profile — the collection is reachable but
+    excluded on privacy grounds (see `excluded`).
+- from: Page
+  to: Page
+  type: belongs_to
+  via: parent
+  detail: Self-referential hierarchy. 0 for every page on this deployment — the page tree is flat.
+- from: Page
+  to: Attachment
+  type: has_one
+  via: featured_media
+- from: Page
+  to: User
+  type: belongs_to
+  via: author
+  detail: Deliberately not traversed. See `excluded`.
+- from: Attachment
+  to: Post
+  type: belongs_to
+  via: post
+  detail: The post or page the attachment was uploaded to; 0 for library-only uploads.
+- from: Term
+  to: Term
+  type: belongs_to
+  via: parent
+  detail: Hierarchical for the category taxonomy; 0 for every category on this deployment.
+- from: SearchResult
+  to: Post
+  type: has_one
+  via: id + subtype
+  detail: Resolve by fetching /wp/v2/{subtype-rest-base}/{id}.
+- from: PostType
+  to: Taxonomy
+  type: has_many
+  via: taxonomies
+- from: Taxonomy
+  to: PostType
+  type: has_many
+  via: types
+excluded:
+- entity: User
+  collection: /wp/v2/users
+  status_observed: 200
+  reason: >-
+    This deployment leaves WordPress author enumeration open — /wp/v2/users answers anonymously
+    with 7 author records. That is a factual observation about the deployment and is recorded here,
+    but the collection is not modelled as an OpenAPI operation, not packaged as an agent skill or
+    MCP tool, and no individual is named anywhere in this repository. Documenting the exposure is
+    legitimate; shipping paginated access to it is not.
+traversal_shortcuts:
+  _embed: >-
+    Appending _embed to a collection or object request inlines featured media and terms under
+    _embedded, collapsing the has_one/has_many hops above into a single request.
+  _fields: >-
+    Appending _fields=id,slug,title,link,date trims the payload substantially — the default post
+    representation carries the full rendered content plus yoast_head markup.
+subway: null
