@@ -37,31 +37,16 @@ tags:
 - Life Sciences
 - content-api
 apis:
-- aid: allay-therapeutics:allay-therapeutics-content-api
-  name: Allay Therapeutics Content API
-  description: >-
-    The anonymously readable WordPress REST API behind www.allaytx.com. It exposes the 19 published
-    news items — press releases, in-the-news coverage and presentations/publications spanning the
-    company's May 2021 launch through the June 2025 $57.5M Series D — the 9 published corporate
-    pages (Home, About Us, Our Science, Pipeline, News, Careers, Contact Us, Privacy Notices, Terms
-    of Service), the media library, the four news categories, the registered post types, taxonomies
-    and statuses, cross-content search, and the oEmbed 1.0 provider endpoint. This is not a
-    developer product Allay Therapeutics markets; it is the marketing site's own content surface,
-    registered at /wp-json/ and verified to return data without credentials. The OpenAPI in this
-    repo is derived from the published route index.
+- aid: allay-therapeutics:allay-therapeutics-comments-api
+  name: Allay Therapeutics Comments API
+  description: Comment collection. Registered and anonymously reachable, but empty — X-WP-Total is 0.
   humanURL: https://developer.wordpress.org/rest-api/
   baseURL: https://www.allaytx.com/wp-json
   tags:
-  - content
-  - wordpress
-  - corporate
-  - news
-  - press-releases
+  - comments
   properties:
   - type: OpenAPI
-    url: openapi/allay-therapeutics-content-openapi.yml
-  - type: Overlay
-    url: overlays/allay-therapeutics-content-overlay.yaml
+    url: openapi/allay-therapeutics-comments-api-openapi.yml
   - type: Authentication
     url: authentication/allay-therapeutics-authentication.yml
   - type: ErrorCatalog
@@ -70,29 +55,150 @@ apis:
     url: conventions/allay-therapeutics-conventions.yml
   - type: DataModel
     url: data-model/allay-therapeutics-data-model.yml
-  x-contract-provenance: >-
-    Derived by the API Evangelist enrichment pipeline from the WordPress REST route index the site
-    publishes at https://www.allaytx.com/wp-json/ — 196 routes across 10 namespaces (oembed/1.0,
-    wpe/cache-plugin/v1, wpe_sign_on_plugin/v1, yoast/v1, duplicate-post/v1, monsterinsights/v1,
-    wp/v2, wp-site-health/v1, wp-block-editor/v1, wp-abilities/v1) — and verified against live
-    anonymous responses on 2026-08-06. Only operations that returned data without credentials are
-    modelled; every write route and the entire plugin-administration surface is excluded. Anonymous
-    401s recorded at harvest: /wp/v2/settings, /wp/v2/menus, /wp/v2/themes, /wp/v2/plugins,
-    /wp/v2/block-types, /wp/v2/font-collections, /wp/v2/icons and the whole wp-abilities/v1
-    agent-capability namespace — so no MCP, agent-tool or AgentCard surface is claimed for this
-    provider. DELIBERATE EXCLUSION: /wp/v2/users answers anonymously with author records; the
-    exposure is recorded in data-model/ and skills/_index.yml but is not modelled as an operation,
-    not packaged as an agent skill, and no individual is named anywhere in this repository. Allay
-    Therapeutics publishes no developer documentation, no API reference, no getting-started guide
-    and no support channel for this surface, so no Documentation / APIReference / GettingStarted /
-    Support pointers are emitted; the humanURL above is the upstream WordPress REST handbook that
-    defines the wp/v2 contract.
+- aid: allay-therapeutics:allay-therapeutics-discovery-api
+  name: Allay Therapeutics Discovery API
+  description: Route, type, taxonomy and status discovery documents.
+  humanURL: https://developer.wordpress.org/rest-api/
+  baseURL: https://www.allaytx.com/wp-json
+  tags:
+  - discovery
+  properties:
+  - type: OpenAPI
+    url: openapi/allay-therapeutics-discovery-api-openapi.yml
+  - type: Authentication
+    url: authentication/allay-therapeutics-authentication.yml
+  - type: ErrorCatalog
+    url: errors/allay-therapeutics-problem-types.yml
+  - type: Conventions
+    url: conventions/allay-therapeutics-conventions.yml
+  - type: DataModel
+    url: data-model/allay-therapeutics-data-model.yml
+- aid: allay-therapeutics:allay-therapeutics-media-api
+  name: Allay Therapeutics Media API
+  description: >-
+    Media library. `X-WP-Total` reports 161 attachments, but only one attachment (id 1503) is returned
+    to an anonymous caller; the remainder are attached to non-public parents.
+  humanURL: https://developer.wordpress.org/rest-api/
+  baseURL: https://www.allaytx.com/wp-json
+  tags:
+  - media
+  properties:
+  - type: OpenAPI
+    url: openapi/allay-therapeutics-media-api-openapi.yml
+  - type: Authentication
+    url: authentication/allay-therapeutics-authentication.yml
+  - type: ErrorCatalog
+    url: errors/allay-therapeutics-problem-types.yml
+  - type: Conventions
+    url: conventions/allay-therapeutics-conventions.yml
+  - type: DataModel
+    url: data-model/allay-therapeutics-data-model.yml
+- aid: allay-therapeutics:allay-therapeutics-oembed-api
+  name: Allay Therapeutics Oembed API
+  description: oEmbed 1.0 provider endpoint for www.allaytx.com URLs.
+  humanURL: https://developer.wordpress.org/rest-api/
+  baseURL: https://www.allaytx.com/wp-json
+  tags:
+  - oembed
+  properties:
+  - type: OpenAPI
+    url: openapi/allay-therapeutics-oembed-api-openapi.yml
+  - type: Authentication
+    url: authentication/allay-therapeutics-authentication.yml
+  - type: ErrorCatalog
+    url: errors/allay-therapeutics-problem-types.yml
+  - type: Conventions
+    url: conventions/allay-therapeutics-conventions.yml
+  - type: DataModel
+    url: data-model/allay-therapeutics-data-model.yml
+- aid: allay-therapeutics:allay-therapeutics-pages-api
+  name: Allay Therapeutics Pages API
+  description: >-
+    Corporate pages. 9 published at harvest time — Home, About Us, Our Science, Pipeline, News, Careers,
+    Contact Us, Privacy Notices, Terms of Service.
+  humanURL: https://developer.wordpress.org/rest-api/
+  baseURL: https://www.allaytx.com/wp-json
+  tags:
+  - pages
+  properties:
+  - type: OpenAPI
+    url: openapi/allay-therapeutics-pages-api-openapi.yml
+  - type: Authentication
+    url: authentication/allay-therapeutics-authentication.yml
+  - type: ErrorCatalog
+    url: errors/allay-therapeutics-problem-types.yml
+  - type: Conventions
+    url: conventions/allay-therapeutics-conventions.yml
+  - type: DataModel
+    url: data-model/allay-therapeutics-data-model.yml
+- aid: allay-therapeutics:allay-therapeutics-posts-api
+  name: Allay Therapeutics Posts API
+  description: >-
+    News archive — press releases, in-the-news coverage, and presentations/publications. 19 posts published
+    at harvest time, spanning 2021-05-13 (company launch with first clinical data) through 2025-06-05
+    (the $57.5M Series D announcement).
+  humanURL: https://developer.wordpress.org/rest-api/
+  baseURL: https://www.allaytx.com/wp-json
+  tags:
+  - posts
+  properties:
+  - type: OpenAPI
+    url: openapi/allay-therapeutics-posts-api-openapi.yml
+  - type: Authentication
+    url: authentication/allay-therapeutics-authentication.yml
+  - type: ErrorCatalog
+    url: errors/allay-therapeutics-problem-types.yml
+  - type: Conventions
+    url: conventions/allay-therapeutics-conventions.yml
+  - type: DataModel
+    url: data-model/allay-therapeutics-data-model.yml
+- aid: allay-therapeutics:allay-therapeutics-search-api
+  name: Allay Therapeutics Search API
+  description: Cross-content search across published posts and pages.
+  humanURL: https://developer.wordpress.org/rest-api/
+  baseURL: https://www.allaytx.com/wp-json
+  tags:
+  - search
+  properties:
+  - type: OpenAPI
+    url: openapi/allay-therapeutics-search-api-openapi.yml
+  - type: Authentication
+    url: authentication/allay-therapeutics-authentication.yml
+  - type: ErrorCatalog
+    url: errors/allay-therapeutics-problem-types.yml
+  - type: Conventions
+    url: conventions/allay-therapeutics-conventions.yml
+  - type: DataModel
+    url: data-model/allay-therapeutics-data-model.yml
+- aid: allay-therapeutics:allay-therapeutics-taxonomy-api
+  name: Allay Therapeutics Taxonomy API
+  description: >-
+    Categories and tags. Four categories are registered — Press Releases (14), In The News (4), Presentations
+    and Publications (1), Uncategorized (0). The post_tag taxonomy holds three unused placeholder terms
+    (Lorem, Ipsum, Dolor), all with a count of 0.
+  humanURL: https://developer.wordpress.org/rest-api/
+  baseURL: https://www.allaytx.com/wp-json
+  tags:
+  - taxonomy
+  properties:
+  - type: OpenAPI
+    url: openapi/allay-therapeutics-taxonomy-api-openapi.yml
+  - type: Authentication
+    url: authentication/allay-therapeutics-authentication.yml
+  - type: ErrorCatalog
+    url: errors/allay-therapeutics-problem-types.yml
+  - type: Conventions
+    url: conventions/allay-therapeutics-conventions.yml
+  - type: DataModel
+    url: data-model/allay-therapeutics-data-model.yml
 maintainers:
 - FN: Kin Lane
   email: kin@apievangelist.com
 - FN: APIs.json
   email: info@apis.io
 common:
+- type: Overlay
+  url: overlays/allay-therapeutics-content-overlay.yaml
 - type: Website
   url: https://www.allaytx.com/
 - type: About
