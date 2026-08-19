@@ -1,0 +1,57 @@
+openapi: 3.2.0
+info:
+  title: Allay Therapeutics Content Oembed API
+  version: wp/v2
+  summary: Anonymously readable WordPress REST content API behind www.allaytx.com.
+  description: The read-only content surface Allay Therapeutics exposes at https://www.allaytx.com/wp-json. Allay Therapeutics is a clinical-stage biopharmaceutical company in San Jose, California and Singapore developing ultra-sustained, non-opioid analgesic products for post-surgical pain management, led by the bupivacaine-based ATX-101 implant for total knee replacement. It runs no developer program and markets no product API. This document is an API Evangelist derivation of the WordPress `wp/v2` and `oembed/1.0` route index the site publishes at /wp-json/, restricted to the operations verified to return data anonymously on 2026-08-06. Every write route, the entire plugin-administration surface, and `/wp/v2/users` are deliberately excluded — see x-api-evangelist-provenance.
+  contact:
+    name: Allay Therapeutics
+    url: https://www.allaytx.com/
+    email: contact@allaytx.com
+  x-api-evangelist-provenance: 'Derived by the API Evangelist enrichment pipeline from the live WordPress REST route index at https://www.allaytx.com/wp-json/ (196 routes across 10 namespaces: oembed/1.0, wpe/cache-plugin/v1, wpe_sign_on_plugin/v1, yoast/v1, duplicate-post/v1, monsterinsights/v1, wp/v2, wp-site-health/v1, wp-block-editor/v1 and wp-abilities/v1) and verified against live anonymous responses on 2026-08-06. Every parameter below appears verbatim in the route index `args` for that endpoint, and every collection count in a description was read from the `X-WP-Total` response header on that date. Only operations that returned data without credentials are modelled. Anonymous 401s recorded at harvest: /wp/v2/settings (rest_forbidden), /wp/v2/menus (rest_cannot_view), /wp/v2/themes (rest_cannot_view_themes), /wp/v2/plugins (rest_cannot_view_plugins), /wp/v2/block-types (rest_block_type_cannot_view), /wp/v2/font-collections (rest_cannot_read), /wp/v2/icons (rest_cannot_view) and the whole wp-abilities/v1 namespace (rest_forbidden) — so no agent-capability, MCP or AgentCard surface is claimed for this provider. DELIBERATE EXCLUSION: /wp/v2/users answers anonymously with 7 author records (WordPress default author enumeration). The exposure is recorded here as a factual observation, but the endpoint is NOT modelled as an operation, NOT packaged as an agent skill, and no individual is named anywhere in this repository. Allay Therapeutics publishes no OpenAPI, no developer documentation and no API reference for this surface; the humanURL in apis.yml points at the upstream WordPress REST handbook that defines the wp/v2 contract. The deployment is served by WP Engine behind nginx, responses carry `x-robots-tag: noindex` and `cache-control: max-age=600, must-revalidate`. Nothing here was obtained with credentials.'
+servers:
+- url: https://www.allaytx.com/wp-json
+  description: Production content API
+tags:
+- name: oembed
+  description: oEmbed 1.0 provider endpoint for www.allaytx.com URLs.
+paths:
+  /oembed/1.0/embed:
+    get:
+      tags:
+      - oembed
+      operationId: getOembed
+      summary: Get an oEmbed response for a site URL
+      description: Returns the oEmbed 1.0 representation of a www.allaytx.com permalink.
+      parameters:
+      - name: url
+        in: query
+        required: true
+        description: The URL of the resource for which to fetch oEmbed data.
+        schema:
+          type: string
+          format: uri
+          examples:
+          - https://www.allaytx.com/
+      - name: format
+        in: query
+        description: The oEmbed format to use.
+        schema:
+          type: string
+          enum:
+          - json
+          - xml
+          default: json
+      - name: maxwidth
+        in: query
+        description: The maximum width of the embed frame in pixels.
+        schema:
+          type: integer
+          default: 600
+      responses:
+        '200':
+          description: oEmbed document
+          content:
+            application/json:
+              schema:
+                type: object

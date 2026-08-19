@@ -1,0 +1,179 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Allay Therapeutics Content Discovery API",
+    "version": "wp/v2"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "discovery",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get the REST API index",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://www.allaytx.com/wp-json/",
+            "params": [
+              {
+                "name": "context",
+                "value": "",
+                "type": "query",
+                "description": "Scope under which the request is made; determines fields present in the response."
+              },
+              {
+                "name": "namespace",
+                "value": "",
+                "type": "query",
+                "description": "Restrict the response to a single namespace."
+              }
+            ]
+          },
+          "docs": "Returns the site index — name, URL, home, the ten registered namespaces, the supported authentication methods (WordPress application passwords), the site logo and icon, and the full 196-entry route table."
+        },
+        {
+          "info": {
+            "name": "List registered post types",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://www.allaytx.com/wp-json/wp/v2/types",
+            "params": [
+              {
+                "name": "context",
+                "value": "",
+                "type": "query",
+                "description": "Scope under which the request is made; determines fields present in the response."
+              }
+            ]
+          },
+          "docs": "Returns the registered post types keyed by slug. At harvest: post, page, attachment, nav_menu_item, wp_block, wp_template, wp_template_part, wp_global_styles, wp_navigation, wp_font_family, wp_font_face."
+        },
+        {
+          "info": {
+            "name": "Get a single registered post type",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://www.allaytx.com/wp-json/wp/v2/types/:type",
+            "params": [
+              {
+                "name": "type",
+                "value": "",
+                "type": "path",
+                "description": "An alphanumeric identifier for the post type."
+              },
+              {
+                "name": "context",
+                "value": "",
+                "type": "query",
+                "description": "Scope under which the request is made; determines fields present in the response."
+              }
+            ]
+          },
+          "docs": "Get a single registered post type"
+        },
+        {
+          "info": {
+            "name": "List registered taxonomies",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://www.allaytx.com/wp-json/wp/v2/taxonomies",
+            "params": [
+              {
+                "name": "context",
+                "value": "",
+                "type": "query",
+                "description": "Scope under which the request is made; determines fields present in the response."
+              },
+              {
+                "name": "type",
+                "value": "",
+                "type": "query",
+                "description": "Limit results to taxonomies associated with a specific post type."
+              }
+            ]
+          },
+          "docs": "Returns the registered taxonomies. At harvest: category, post_tag, nav_menu, wp_pattern_category."
+        },
+        {
+          "info": {
+            "name": "Get a single registered taxonomy",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://www.allaytx.com/wp-json/wp/v2/taxonomies/:taxonomy",
+            "params": [
+              {
+                "name": "taxonomy",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "context",
+                "value": "",
+                "type": "query",
+                "description": "Scope under which the request is made; determines fields present in the response."
+              }
+            ]
+          },
+          "docs": "Get a single registered taxonomy"
+        },
+        {
+          "info": {
+            "name": "List registered post statuses",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://www.allaytx.com/wp-json/wp/v2/statuses",
+            "params": [
+              {
+                "name": "context",
+                "value": "",
+                "type": "query",
+                "description": "Scope under which the request is made; determines fields present in the response."
+              }
+            ]
+          },
+          "docs": "Returns the publicly queryable statuses. At harvest: publish, acf-disabled."
+        },
+        {
+          "info": {
+            "name": "Get a single registered post status",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://www.allaytx.com/wp-json/wp/v2/statuses/:status",
+            "params": [
+              {
+                "name": "status",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "context",
+                "value": "",
+                "type": "query",
+                "description": "Scope under which the request is made; determines fields present in the response."
+              }
+            ]
+          },
+          "docs": "Get a single registered post status"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

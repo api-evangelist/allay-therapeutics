@@ -1,0 +1,138 @@
+{
+  "item": [
+    {
+      "id": "3e67da1a-980c-4787-ad3b-91bff5f43e5f",
+      "name": "oembed",
+      "description": {
+        "content": "oEmbed 1.0 provider endpoint for www.allaytx.com URLs.",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "34841943-0ea9-4b68-a73e-a182cbfe75e1",
+          "name": "Get an oEmbed response for a site URL",
+          "request": {
+            "name": "Get an oEmbed response for a site URL",
+            "description": {
+              "content": "Returns the oEmbed 1.0 representation of a www.allaytx.com permalink.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "oembed",
+                "1.0",
+                "embed"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "url",
+                  "value": "<uri>",
+                  "description": "(Required) The URL of the resource for which to fetch oEmbed data."
+                },
+                {
+                  "disabled": false,
+                  "key": "format",
+                  "value": "json",
+                  "description": "The oEmbed format to use."
+                },
+                {
+                  "disabled": false,
+                  "key": "maxwidth",
+                  "value": "600",
+                  "description": "The maximum width of the embed frame in pixels."
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "df921e2e-92ae-4cfa-ab6c-45d32e5ec709",
+              "name": "oEmbed document",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "oembed",
+                    "1.0",
+                    "embed"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "url",
+                      "value": "<uri>"
+                    },
+                    {
+                      "key": "format",
+                      "value": "json"
+                    },
+                    {
+                      "key": "maxwidth",
+                      "value": "600"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://www.allaytx.com/wp-json",
+      "key": "baseUrl"
+    }
+  ],
+  "info": {
+    "_postman_id": "986893f3-f1be-4f89-b792-798218143195",
+    "name": "Allay Therapeutics Content Oembed API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "The read-only content surface Allay Therapeutics exposes at https://www.allaytx.com/wp-json. Allay Therapeutics is a clinical-stage biopharmaceutical company in San Jose, California and Singapore developing ultra-sustained, non-opioid analgesic products for post-surgical pain management, led by the bupivacaine-based ATX-101 implant for total knee replacement. It runs no developer program and markets no product API. This document is an API Evangelist derivation of the WordPress `wp/v2` and `oembed/1.0` route index the site publishes at /wp-json/, restricted to the operations verified to return data anonymously on 2026-08-06. Every write route, the entire plugin-administration surface, and `/wp/v2/users` are deliberately excluded — see x-api-evangelist-provenance.\n\nContact Support:\n Name: Allay Therapeutics\n Email: contact@allaytx.com",
+      "type": "text/plain"
+    }
+  }
+}

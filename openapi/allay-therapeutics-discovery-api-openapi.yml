@@ -1,0 +1,203 @@
+openapi: 3.2.0
+info:
+  title: Allay Therapeutics Content Discovery API
+  version: wp/v2
+  summary: Anonymously readable WordPress REST content API behind www.allaytx.com.
+  description: The read-only content surface Allay Therapeutics exposes at https://www.allaytx.com/wp-json. Allay Therapeutics is a clinical-stage biopharmaceutical company in San Jose, California and Singapore developing ultra-sustained, non-opioid analgesic products for post-surgical pain management, led by the bupivacaine-based ATX-101 implant for total knee replacement. It runs no developer program and markets no product API. This document is an API Evangelist derivation of the WordPress `wp/v2` and `oembed/1.0` route index the site publishes at /wp-json/, restricted to the operations verified to return data anonymously on 2026-08-06. Every write route, the entire plugin-administration surface, and `/wp/v2/users` are deliberately excluded — see x-api-evangelist-provenance.
+  contact:
+    name: Allay Therapeutics
+    url: https://www.allaytx.com/
+    email: contact@allaytx.com
+  x-api-evangelist-provenance: 'Derived by the API Evangelist enrichment pipeline from the live WordPress REST route index at https://www.allaytx.com/wp-json/ (196 routes across 10 namespaces: oembed/1.0, wpe/cache-plugin/v1, wpe_sign_on_plugin/v1, yoast/v1, duplicate-post/v1, monsterinsights/v1, wp/v2, wp-site-health/v1, wp-block-editor/v1 and wp-abilities/v1) and verified against live anonymous responses on 2026-08-06. Every parameter below appears verbatim in the route index `args` for that endpoint, and every collection count in a description was read from the `X-WP-Total` response header on that date. Only operations that returned data without credentials are modelled. Anonymous 401s recorded at harvest: /wp/v2/settings (rest_forbidden), /wp/v2/menus (rest_cannot_view), /wp/v2/themes (rest_cannot_view_themes), /wp/v2/plugins (rest_cannot_view_plugins), /wp/v2/block-types (rest_block_type_cannot_view), /wp/v2/font-collections (rest_cannot_read), /wp/v2/icons (rest_cannot_view) and the whole wp-abilities/v1 namespace (rest_forbidden) — so no agent-capability, MCP or AgentCard surface is claimed for this provider. DELIBERATE EXCLUSION: /wp/v2/users answers anonymously with 7 author records (WordPress default author enumeration). The exposure is recorded here as a factual observation, but the endpoint is NOT modelled as an operation, NOT packaged as an agent skill, and no individual is named anywhere in this repository. Allay Therapeutics publishes no OpenAPI, no developer documentation and no API reference for this surface; the humanURL in apis.yml points at the upstream WordPress REST handbook that defines the wp/v2 contract. The deployment is served by WP Engine behind nginx, responses carry `x-robots-tag: noindex` and `cache-control: max-age=600, must-revalidate`. Nothing here was obtained with credentials.'
+servers:
+- url: https://www.allaytx.com/wp-json
+  description: Production content API
+tags:
+- name: discovery
+  description: Route, type, taxonomy and status discovery documents.
+paths:
+  /:
+    get:
+      tags:
+      - discovery
+      operationId: getApiIndex
+      summary: Get the REST API index
+      description: Returns the site index — name, URL, home, the ten registered namespaces, the supported authentication methods (WordPress application passwords), the site logo and icon, and the full 196-entry route table.
+      parameters:
+      - $ref: '#/components/parameters/Context'
+      - name: namespace
+        in: query
+        description: Restrict the response to a single namespace.
+        schema:
+          type: string
+          examples:
+          - wp/v2
+      responses:
+        '200':
+          description: Site index
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiIndex'
+  /wp/v2/types:
+    get:
+      tags:
+      - discovery
+      operationId: listTypes
+      summary: List registered post types
+      description: 'Returns the registered post types keyed by slug. At harvest: post, page, attachment, nav_menu_item, wp_block, wp_template, wp_template_part, wp_global_styles, wp_navigation, wp_font_family, wp_font_face.'
+      parameters:
+      - $ref: '#/components/parameters/Context'
+      responses:
+        '200':
+          description: Map of post types
+          content:
+            application/json:
+              schema:
+                type: object
+  /wp/v2/types/{type}:
+    get:
+      tags:
+      - discovery
+      operationId: getType
+      summary: Get a single registered post type
+      parameters:
+      - name: type
+        in: path
+        required: true
+        description: An alphanumeric identifier for the post type.
+        schema:
+          type: string
+          examples:
+          - post
+      - $ref: '#/components/parameters/Context'
+      responses:
+        '200':
+          description: A post type
+          content:
+            application/json:
+              schema:
+                type: object
+  /wp/v2/taxonomies:
+    get:
+      tags:
+      - discovery
+      operationId: listTaxonomies
+      summary: List registered taxonomies
+      description: 'Returns the registered taxonomies. At harvest: category, post_tag, nav_menu, wp_pattern_category.'
+      parameters:
+      - $ref: '#/components/parameters/Context'
+      - name: type
+        in: query
+        description: Limit results to taxonomies associated with a specific post type.
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Map of taxonomies
+          content:
+            application/json:
+              schema:
+                type: object
+  /wp/v2/taxonomies/{taxonomy}:
+    get:
+      tags:
+      - discovery
+      operationId: getTaxonomy
+      summary: Get a single registered taxonomy
+      parameters:
+      - name: taxonomy
+        in: path
+        required: true
+        schema:
+          type: string
+          examples:
+          - category
+      - $ref: '#/components/parameters/Context'
+      responses:
+        '200':
+          description: A taxonomy
+          content:
+            application/json:
+              schema:
+                type: object
+  /wp/v2/statuses:
+    get:
+      tags:
+      - discovery
+      operationId: listStatuses
+      summary: List registered post statuses
+      description: 'Returns the publicly queryable statuses. At harvest: publish, acf-disabled.'
+      parameters:
+      - $ref: '#/components/parameters/Context'
+      responses:
+        '200':
+          description: Map of statuses
+          content:
+            application/json:
+              schema:
+                type: object
+  /wp/v2/statuses/{status}:
+    get:
+      tags:
+      - discovery
+      operationId: getStatus
+      summary: Get a single registered post status
+      parameters:
+      - name: status
+        in: path
+        required: true
+        schema:
+          type: string
+          examples:
+          - publish
+      - $ref: '#/components/parameters/Context'
+      responses:
+        '200':
+          description: A post status
+          content:
+            application/json:
+              schema:
+                type: object
+components:
+  schemas:
+    ApiIndex:
+      type: object
+      description: The WordPress REST API site index.
+      properties:
+        name:
+          type: string
+        description:
+          type: string
+        url:
+          type: string
+          format: uri
+        home:
+          type: string
+          format: uri
+        gmt_offset:
+          type: number
+        timezone_string:
+          type: string
+        namespaces:
+          type: array
+          items:
+            type: string
+        authentication:
+          type: object
+        routes:
+          type: object
+        _links:
+          type: object
+  parameters:
+    Context:
+      name: context
+      in: query
+      description: Scope under which the request is made; determines fields present in the response.
+      schema:
+        type: string
+        enum:
+        - view
+        - embed
+        - edit
+        default: view

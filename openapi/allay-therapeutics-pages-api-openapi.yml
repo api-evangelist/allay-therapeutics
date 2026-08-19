@@ -1,0 +1,275 @@
+openapi: 3.2.0
+info:
+  title: Allay Therapeutics Content Pages API
+  version: wp/v2
+  summary: Anonymously readable WordPress REST content API behind www.allaytx.com.
+  description: The read-only content surface Allay Therapeutics exposes at https://www.allaytx.com/wp-json. Allay Therapeutics is a clinical-stage biopharmaceutical company in San Jose, California and Singapore developing ultra-sustained, non-opioid analgesic products for post-surgical pain management, led by the bupivacaine-based ATX-101 implant for total knee replacement. It runs no developer program and markets no product API. This document is an API Evangelist derivation of the WordPress `wp/v2` and `oembed/1.0` route index the site publishes at /wp-json/, restricted to the operations verified to return data anonymously on 2026-08-06. Every write route, the entire plugin-administration surface, and `/wp/v2/users` are deliberately excluded — see x-api-evangelist-provenance.
+  contact:
+    name: Allay Therapeutics
+    url: https://www.allaytx.com/
+    email: contact@allaytx.com
+  x-api-evangelist-provenance: 'Derived by the API Evangelist enrichment pipeline from the live WordPress REST route index at https://www.allaytx.com/wp-json/ (196 routes across 10 namespaces: oembed/1.0, wpe/cache-plugin/v1, wpe_sign_on_plugin/v1, yoast/v1, duplicate-post/v1, monsterinsights/v1, wp/v2, wp-site-health/v1, wp-block-editor/v1 and wp-abilities/v1) and verified against live anonymous responses on 2026-08-06. Every parameter below appears verbatim in the route index `args` for that endpoint, and every collection count in a description was read from the `X-WP-Total` response header on that date. Only operations that returned data without credentials are modelled. Anonymous 401s recorded at harvest: /wp/v2/settings (rest_forbidden), /wp/v2/menus (rest_cannot_view), /wp/v2/themes (rest_cannot_view_themes), /wp/v2/plugins (rest_cannot_view_plugins), /wp/v2/block-types (rest_block_type_cannot_view), /wp/v2/font-collections (rest_cannot_read), /wp/v2/icons (rest_cannot_view) and the whole wp-abilities/v1 namespace (rest_forbidden) — so no agent-capability, MCP or AgentCard surface is claimed for this provider. DELIBERATE EXCLUSION: /wp/v2/users answers anonymously with 7 author records (WordPress default author enumeration). The exposure is recorded here as a factual observation, but the endpoint is NOT modelled as an operation, NOT packaged as an agent skill, and no individual is named anywhere in this repository. Allay Therapeutics publishes no OpenAPI, no developer documentation and no API reference for this surface; the humanURL in apis.yml points at the upstream WordPress REST handbook that defines the wp/v2 contract. The deployment is served by WP Engine behind nginx, responses carry `x-robots-tag: noindex` and `cache-control: max-age=600, must-revalidate`. Nothing here was obtained with credentials.'
+servers:
+- url: https://www.allaytx.com/wp-json
+  description: Production content API
+tags:
+- name: pages
+  description: Corporate pages. 9 published at harvest time — Home, About Us, Our Science, Pipeline, News, Careers, Contact Us, Privacy Notices, Terms of Service.
+paths:
+  /wp/v2/pages:
+    get:
+      tags:
+      - pages
+      operationId: listPages
+      summary: List corporate pages
+      description: Lists published pages. Nine at harvest time — Home, About Us, Our Science, Pipeline, News, Careers, Contact Us, Privacy Notices, Terms of Service.
+      parameters:
+      - $ref: '#/components/parameters/Context'
+      - $ref: '#/components/parameters/Page'
+      - $ref: '#/components/parameters/PerPage'
+      - $ref: '#/components/parameters/Search'
+      - $ref: '#/components/parameters/Exclude'
+      - $ref: '#/components/parameters/Include'
+      - $ref: '#/components/parameters/Offset'
+      - $ref: '#/components/parameters/Order'
+      - $ref: '#/components/parameters/Slug'
+      - $ref: '#/components/parameters/Fields'
+      - name: parent
+        in: query
+        description: Limit result set to items with particular parent IDs.
+        schema:
+          type: array
+          items:
+            type: integer
+      - name: menu_order
+        in: query
+        description: Limit result set to posts with a specific menu_order value.
+        schema:
+          type: integer
+      responses:
+        '200':
+          description: A page of pages
+          headers:
+            X-WP-Total:
+              schema:
+                type: integer
+            X-WP-TotalPages:
+              schema:
+                type: integer
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Page'
+        '400':
+          $ref: '#/components/responses/InvalidParam'
+  /wp/v2/pages/{id}:
+    get:
+      tags:
+      - pages
+      operationId: getPage
+      summary: Get a single corporate page
+      description: Retrieves one published page by numeric ID (e.g. 644 = Our Science, 653 = Pipeline).
+      parameters:
+      - $ref: '#/components/parameters/PathId'
+      - $ref: '#/components/parameters/Context'
+      - $ref: '#/components/parameters/Fields'
+      responses:
+        '200':
+          description: A page
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Page'
+        '404':
+          $ref: '#/components/responses/PostNotFound'
+components:
+  parameters:
+    Order:
+      name: order
+      in: query
+      description: Order sort attribute ascending or descending.
+      schema:
+        type: string
+        enum:
+        - asc
+        - desc
+        default: desc
+    Page:
+      name: page
+      in: query
+      description: Current page of the collection.
+      schema:
+        type: integer
+        minimum: 1
+        default: 1
+    Search:
+      name: search
+      in: query
+      description: Limit results to those matching a string.
+      schema:
+        type: string
+    Fields:
+      name: _fields
+      in: query
+      description: Sparse fieldset — comma-separated list of fields to include in the response.
+      schema:
+        type: string
+        examples:
+        - id,date,slug,title,link
+    PathId:
+      name: id
+      in: path
+      required: true
+      description: Unique identifier for the object.
+      schema:
+        type: integer
+    Context:
+      name: context
+      in: query
+      description: Scope under which the request is made; determines fields present in the response.
+      schema:
+        type: string
+        enum:
+        - view
+        - embed
+        - edit
+        default: view
+    PerPage:
+      name: per_page
+      in: query
+      description: Maximum number of items to be returned in the result set.
+      schema:
+        type: integer
+        minimum: 1
+        maximum: 100
+        default: 10
+    Include:
+      name: include
+      in: query
+      description: Limit result set to specific IDs.
+      schema:
+        type: array
+        items:
+          type: integer
+    Slug:
+      name: slug
+      in: query
+      description: Limit result set to posts with one or more specific slugs.
+      schema:
+        type: array
+        items:
+          type: string
+    Offset:
+      name: offset
+      in: query
+      description: Offset the result set by a specific number of items.
+      schema:
+        type: integer
+    Exclude:
+      name: exclude
+      in: query
+      description: Ensure result set excludes specific IDs.
+      schema:
+        type: array
+        items:
+          type: integer
+  responses:
+    InvalidParam:
+      description: One or more query parameters failed validation.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          examples:
+            perPageOutOfBounds:
+              value:
+                code: rest_invalid_param
+                message: 'Invalid parameter(s): per_page'
+                data:
+                  status: 400
+                  params:
+                    per_page: per_page must be between 1 (inclusive) and 100 (inclusive)
+    PostNotFound:
+      description: No object exists with the supplied ID.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          examples:
+            invalidPostId:
+              value:
+                code: rest_post_invalid_id
+                message: Invalid post ID.
+                data:
+                  status: 404
+  schemas:
+    Error:
+      type: object
+      description: The WordPress REST error envelope. Not RFC 9457 — the media type is application/json, and the shape is {code, message, data:{status}} with an optional data.params / data.details map on validation failures.
+      required:
+      - code
+      - message
+      - data
+      properties:
+        code:
+          type: string
+          description: Machine-readable error code.
+        message:
+          type: string
+          description: Human-readable error message.
+        data:
+          type: object
+          properties:
+            status:
+              type: integer
+              description: HTTP status code.
+            params:
+              type: object
+              description: Per-parameter validation messages.
+            details:
+              type: object
+              description: Per-parameter structured validation detail.
+    Page:
+      type: object
+      description: A corporate page.
+      properties:
+        id:
+          type: integer
+        date:
+          type: string
+          format: date-time
+        modified:
+          type: string
+          format: date-time
+        slug:
+          type: string
+        status:
+          type: string
+        type:
+          type: string
+          const: page
+        link:
+          type: string
+          format: uri
+        title:
+          $ref: '#/components/schemas/RenderedText'
+        content:
+          $ref: '#/components/schemas/RenderedText'
+        excerpt:
+          $ref: '#/components/schemas/RenderedText'
+        parent:
+          type: integer
+        menu_order:
+          type: integer
+        _links:
+          type: object
+    RenderedText:
+      type: object
+      properties:
+        rendered:
+          type: string
+          description: HTML for the field, transformed for display.
+        protected:
+          type: boolean

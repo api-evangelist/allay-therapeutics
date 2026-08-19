@@ -1,0 +1,248 @@
+openapi: 3.2.0
+info:
+  title: Allay Therapeutics Content Taxonomy API
+  version: wp/v2
+  summary: Anonymously readable WordPress REST content API behind www.allaytx.com.
+  description: The read-only content surface Allay Therapeutics exposes at https://www.allaytx.com/wp-json. Allay Therapeutics is a clinical-stage biopharmaceutical company in San Jose, California and Singapore developing ultra-sustained, non-opioid analgesic products for post-surgical pain management, led by the bupivacaine-based ATX-101 implant for total knee replacement. It runs no developer program and markets no product API. This document is an API Evangelist derivation of the WordPress `wp/v2` and `oembed/1.0` route index the site publishes at /wp-json/, restricted to the operations verified to return data anonymously on 2026-08-06. Every write route, the entire plugin-administration surface, and `/wp/v2/users` are deliberately excluded — see x-api-evangelist-provenance.
+  contact:
+    name: Allay Therapeutics
+    url: https://www.allaytx.com/
+    email: contact@allaytx.com
+  x-api-evangelist-provenance: 'Derived by the API Evangelist enrichment pipeline from the live WordPress REST route index at https://www.allaytx.com/wp-json/ (196 routes across 10 namespaces: oembed/1.0, wpe/cache-plugin/v1, wpe_sign_on_plugin/v1, yoast/v1, duplicate-post/v1, monsterinsights/v1, wp/v2, wp-site-health/v1, wp-block-editor/v1 and wp-abilities/v1) and verified against live anonymous responses on 2026-08-06. Every parameter below appears verbatim in the route index `args` for that endpoint, and every collection count in a description was read from the `X-WP-Total` response header on that date. Only operations that returned data without credentials are modelled. Anonymous 401s recorded at harvest: /wp/v2/settings (rest_forbidden), /wp/v2/menus (rest_cannot_view), /wp/v2/themes (rest_cannot_view_themes), /wp/v2/plugins (rest_cannot_view_plugins), /wp/v2/block-types (rest_block_type_cannot_view), /wp/v2/font-collections (rest_cannot_read), /wp/v2/icons (rest_cannot_view) and the whole wp-abilities/v1 namespace (rest_forbidden) — so no agent-capability, MCP or AgentCard surface is claimed for this provider. DELIBERATE EXCLUSION: /wp/v2/users answers anonymously with 7 author records (WordPress default author enumeration). The exposure is recorded here as a factual observation, but the endpoint is NOT modelled as an operation, NOT packaged as an agent skill, and no individual is named anywhere in this repository. Allay Therapeutics publishes no OpenAPI, no developer documentation and no API reference for this surface; the humanURL in apis.yml points at the upstream WordPress REST handbook that defines the wp/v2 contract. The deployment is served by WP Engine behind nginx, responses carry `x-robots-tag: noindex` and `cache-control: max-age=600, must-revalidate`. Nothing here was obtained with credentials.'
+servers:
+- url: https://www.allaytx.com/wp-json
+  description: Production content API
+tags:
+- name: taxonomy
+  description: Categories and tags. Four categories are registered — Press Releases (14), In The News (4), Presentations and Publications (1), Uncategorized (0). The post_tag taxonomy holds three unused placeholder terms (Lorem, Ipsum, Dolor), all with a count of 0.
+paths:
+  /wp/v2/categories:
+    get:
+      tags:
+      - taxonomy
+      operationId: listCategories
+      summary: List news categories
+      description: Lists category terms. Four registered — Press Releases (id 5, 14 posts), In The News (id 10, 4 posts), Presentations and Publications (id 23, 1 post), Uncategorized (id 1, 0).
+      parameters:
+      - $ref: '#/components/parameters/Context'
+      - $ref: '#/components/parameters/Page'
+      - $ref: '#/components/parameters/PerPage'
+      - $ref: '#/components/parameters/Search'
+      - $ref: '#/components/parameters/Order'
+      - $ref: '#/components/parameters/Slug'
+      - name: hide_empty
+        in: query
+        description: Whether to hide terms not assigned to any posts.
+        schema:
+          type: boolean
+          default: false
+      - name: post
+        in: query
+        description: Limit result set to terms assigned to a specific post.
+        schema:
+          type: integer
+      responses:
+        '200':
+          description: A page of category terms
+          headers:
+            X-WP-Total:
+              schema:
+                type: integer
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Term'
+  /wp/v2/categories/{id}:
+    get:
+      tags:
+      - taxonomy
+      operationId: getCategory
+      summary: Get a single category term
+      parameters:
+      - $ref: '#/components/parameters/PathId'
+      - $ref: '#/components/parameters/Context'
+      responses:
+        '200':
+          description: A category term
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Term'
+        '404':
+          $ref: '#/components/responses/TermNotFound'
+  /wp/v2/tags:
+    get:
+      tags:
+      - taxonomy
+      operationId: listTags
+      summary: List post tags
+      description: Lists post_tag terms. Three placeholder terms are registered (Lorem, Ipsum, Dolor), all with a post count of 0 — the taxonomy is unused on this deployment.
+      parameters:
+      - $ref: '#/components/parameters/Context'
+      - $ref: '#/components/parameters/Page'
+      - $ref: '#/components/parameters/PerPage'
+      - $ref: '#/components/parameters/Search'
+      - $ref: '#/components/parameters/Order'
+      - $ref: '#/components/parameters/Slug'
+      - name: hide_empty
+        in: query
+        schema:
+          type: boolean
+          default: false
+      responses:
+        '200':
+          description: A page of tag terms
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Term'
+  /wp/v2/tags/{id}:
+    get:
+      tags:
+      - taxonomy
+      operationId: getTag
+      summary: Get a single tag term
+      parameters:
+      - $ref: '#/components/parameters/PathId'
+      - $ref: '#/components/parameters/Context'
+      responses:
+        '200':
+          description: A tag term
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Term'
+        '404':
+          $ref: '#/components/responses/TermNotFound'
+components:
+  parameters:
+    Order:
+      name: order
+      in: query
+      description: Order sort attribute ascending or descending.
+      schema:
+        type: string
+        enum:
+        - asc
+        - desc
+        default: desc
+    Page:
+      name: page
+      in: query
+      description: Current page of the collection.
+      schema:
+        type: integer
+        minimum: 1
+        default: 1
+    Search:
+      name: search
+      in: query
+      description: Limit results to those matching a string.
+      schema:
+        type: string
+    PathId:
+      name: id
+      in: path
+      required: true
+      description: Unique identifier for the object.
+      schema:
+        type: integer
+    Context:
+      name: context
+      in: query
+      description: Scope under which the request is made; determines fields present in the response.
+      schema:
+        type: string
+        enum:
+        - view
+        - embed
+        - edit
+        default: view
+    PerPage:
+      name: per_page
+      in: query
+      description: Maximum number of items to be returned in the result set.
+      schema:
+        type: integer
+        minimum: 1
+        maximum: 100
+        default: 10
+    Slug:
+      name: slug
+      in: query
+      description: Limit result set to posts with one or more specific slugs.
+      schema:
+        type: array
+        items:
+          type: string
+  schemas:
+    Term:
+      type: object
+      description: A taxonomy term (category or tag).
+      properties:
+        id:
+          type: integer
+        count:
+          type: integer
+        description:
+          type: string
+        link:
+          type: string
+          format: uri
+        name:
+          type: string
+        slug:
+          type: string
+        taxonomy:
+          type: string
+          enum:
+          - category
+          - post_tag
+        parent:
+          type: integer
+        _links:
+          type: object
+    Error:
+      type: object
+      description: The WordPress REST error envelope. Not RFC 9457 — the media type is application/json, and the shape is {code, message, data:{status}} with an optional data.params / data.details map on validation failures.
+      required:
+      - code
+      - message
+      - data
+      properties:
+        code:
+          type: string
+          description: Machine-readable error code.
+        message:
+          type: string
+          description: Human-readable error message.
+        data:
+          type: object
+          properties:
+            status:
+              type: integer
+              description: HTTP status code.
+            params:
+              type: object
+              description: Per-parameter validation messages.
+            details:
+              type: object
+              description: Per-parameter structured validation detail.
+  responses:
+    TermNotFound:
+      description: No term exists with the supplied ID.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          examples:
+            invalidTermId:
+              value:
+                code: rest_term_invalid
+                message: Term does not exist.
+                data:
+                  status: 404

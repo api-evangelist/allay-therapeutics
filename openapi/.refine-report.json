@@ -1,0 +1,38 @@
+{
+  "provider": "allay-therapeutics",
+  "sources": [
+    "allay-therapeutics-comments-api-openapi.yml",
+    "allay-therapeutics-discovery-api-openapi.yml",
+    "allay-therapeutics-media-api-openapi.yml",
+    "allay-therapeutics-oembed-api-openapi.yml",
+    "allay-therapeutics-pages-api-openapi.yml",
+    "allay-therapeutics-posts-api-openapi.yml",
+    "allay-therapeutics-search-api-openapi.yml",
+    "allay-therapeutics-taxonomy-api-openapi.yml"
+  ],
+  "outputs": [
+    "allay-therapeutics-comments-api-openapi.yml",
+    "allay-therapeutics-discovery-api-openapi.yml",
+    "allay-therapeutics-media-api-openapi.yml",
+    "allay-therapeutics-oembed-api-openapi.yml",
+    "allay-therapeutics-pages-api-openapi.yml",
+    "allay-therapeutics-posts-api-openapi.yml",
+    "allay-therapeutics-search-api-openapi.yml",
+    "allay-therapeutics-taxonomy-api-openapi.yml"
+  ],
+  "archived": [],
+  "errors": [],
+  "warnings": [],
+  "notes": [
+    "allay-therapeutics-comments-api-openapi.yml: upgraded openapi 3.1.0 -> OpenAPI 3.2.0",
+    "allay-therapeutics-discovery-api-openapi.yml: upgraded openapi 3.1.0 -> OpenAPI 3.2.0",
+    "allay-therapeutics-media-api-openapi.yml: upgraded openapi 3.1.0 -> OpenAPI 3.2.0",
+    "allay-therapeutics-oembed-api-openapi.yml: upgraded openapi 3.1.0 -> OpenAPI 3.2.0",
+    "allay-therapeutics-pages-api-openapi.yml: upgraded openapi 3.1.0 -> OpenAPI 3.2.0",
+    "allay-therapeutics-posts-api-openapi.yml: upgraded openapi 3.1.0 -> OpenAPI 3.2.0",
+    "allay-therapeutics-search-api-openapi.yml: upgraded openapi 3.1.0 -> OpenAPI 3.2.0",
+    "allay-therapeutics-taxonomy-api-openapi.yml: upgraded openapi 3.1.0 -> OpenAPI 3.2.0",
+    "apis.yml register: already-registered"
+  ],
+  "skipped": []
+}

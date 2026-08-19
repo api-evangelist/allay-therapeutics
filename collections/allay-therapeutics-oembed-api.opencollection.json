@@ -1,0 +1,49 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Allay Therapeutics Content Oembed API",
+    "version": "wp/v2"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "oembed",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get an oEmbed response for a site URL",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://www.allaytx.com/wp-json/oembed/1.0/embed",
+            "params": [
+              {
+                "name": "url",
+                "value": "",
+                "type": "query",
+                "description": "The URL of the resource for which to fetch oEmbed data."
+              },
+              {
+                "name": "format",
+                "value": "",
+                "type": "query",
+                "description": "The oEmbed format to use."
+              },
+              {
+                "name": "maxwidth",
+                "value": "",
+                "type": "query",
+                "description": "The maximum width of the embed frame in pixels."
+              }
+            ]
+          },
+          "docs": "Returns the oEmbed 1.0 representation of a www.allaytx.com permalink."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}
