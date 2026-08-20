@@ -43,6 +43,8 @@ apis:
   humanURL: https://developer.wordpress.org/rest-api/
   baseURL: https://www.allaytx.com/wp-json
   tags:
+  - Comments
+  tags_raw:
   - comments
   properties:
   - type: OpenAPI
@@ -61,6 +63,8 @@ apis:
   humanURL: https://developer.wordpress.org/rest-api/
   baseURL: https://www.allaytx.com/wp-json
   tags:
+  - Discovery
+  tags_raw:
   - discovery
   properties:
   - type: OpenAPI
@@ -81,6 +85,8 @@ apis:
   humanURL: https://developer.wordpress.org/rest-api/
   baseURL: https://www.allaytx.com/wp-json
   tags:
+  - Media
+  tags_raw:
   - media
   properties:
   - type: OpenAPI
@@ -99,6 +105,8 @@ apis:
   humanURL: https://developer.wordpress.org/rest-api/
   baseURL: https://www.allaytx.com/wp-json
   tags:
+  - oEmbed
+  tags_raw:
   - oembed
   properties:
   - type: OpenAPI
@@ -119,6 +127,8 @@ apis:
   humanURL: https://developer.wordpress.org/rest-api/
   baseURL: https://www.allaytx.com/wp-json
   tags:
+  - Pages
+  tags_raw:
   - pages
   properties:
   - type: OpenAPI
@@ -140,6 +150,8 @@ apis:
   humanURL: https://developer.wordpress.org/rest-api/
   baseURL: https://www.allaytx.com/wp-json
   tags:
+  - Posts
+  tags_raw:
   - posts
   properties:
   - type: OpenAPI
@@ -158,6 +170,8 @@ apis:
   humanURL: https://developer.wordpress.org/rest-api/
   baseURL: https://www.allaytx.com/wp-json
   tags:
+  - Search
+  tags_raw:
   - search
   properties:
   - type: OpenAPI
@@ -179,6 +193,8 @@ apis:
   humanURL: https://developer.wordpress.org/rest-api/
   baseURL: https://www.allaytx.com/wp-json
   tags:
+  - Taxonomy
+  tags_raw:
   - taxonomy
   properties:
   - type: OpenAPI
