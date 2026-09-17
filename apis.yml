@@ -124,26 +124,6 @@ apis:
     url: conventions/allay-therapeutics-conventions.yml
   - type: DataModel
     url: data-model/allay-therapeutics-data-model.yml
-- aid: allay-therapeutics:allay-therapeutics-oembed-api
-  name: Allay Therapeutics Oembed API
-  description: oEmbed 1.0 provider endpoint for www.allaytx.com URLs.
-  humanURL: https://developer.wordpress.org/rest-api/
-  baseURL: https://www.allaytx.com/wp-json
-  tags:
-  - oEmbed
-  tags_raw:
-  - oembed
-  properties:
-  - type: OpenAPI
-    url: openapi/allay-therapeutics-oembed-api-openapi.yml
-  - type: Authentication
-    url: authentication/allay-therapeutics-authentication.yml
-  - type: ErrorCatalog
-    url: errors/allay-therapeutics-problem-types.yml
-  - type: Conventions
-    url: conventions/allay-therapeutics-conventions.yml
-  - type: DataModel
-    url: data-model/allay-therapeutics-data-model.yml
 - aid: allay-therapeutics:allay-therapeutics-pages-api
   name: Allay Therapeutics Pages API
   description: >-
@@ -224,6 +204,24 @@ apis:
   properties:
   - type: OpenAPI
     url: openapi/allay-therapeutics-taxonomy-api-openapi.yml
+  - type: Authentication
+    url: authentication/allay-therapeutics-authentication.yml
+  - type: ErrorCatalog
+    url: errors/allay-therapeutics-problem-types.yml
+  - type: Conventions
+    url: conventions/allay-therapeutics-conventions.yml
+  - type: DataModel
+    url: data-model/allay-therapeutics-data-model.yml
+- aid: allay-therapeutics:allay-therapeutics-o-embed-api
+  name: Allay Therapeutics o Embed API
+  description: oEmbed 1.0 provider endpoint for www.allaytx.com URLs.
+  humanURL: https://developer.wordpress.org/rest-api/
+  baseURL: https://www.allaytx.com/wp-json
+  tags:
+  - o Embed
+  properties:
+  - type: OpenAPI
+    url: openapi/allay-therapeutics-o-embed-api-openapi.yml
   - type: Authentication
     url: authentication/allay-therapeutics-authentication.yml
   - type: ErrorCatalog
