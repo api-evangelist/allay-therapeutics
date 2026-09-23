@@ -3,7 +3,7 @@ info:
   title: Allay Therapeutics Content Comments API
   version: wp/v2
   summary: Anonymously readable WordPress REST content API behind www.allaytx.com.
-  description: The read-only content surface Allay Therapeutics exposes at https://www.allaytx.com/wp-json. Allay Therapeutics is a clinical-stage biopharmaceutical company in San Jose, California and Singapore developing ultra-sustained, non-opioid analgesic products for post-surgical pain management, led by the bupivacaine-based ATX-101 implant for total knee replacement. It runs no developer program and markets no product API. This document is an API Evangelist derivation of the WordPress `wp/v2` and `oembed/1.0` route index the site publishes at /wp-json/, restricted to the operations verified to return data anonymously on 2026-08-06. Every write route, the entire plugin-administration surface, and `/wp/v2/users` are deliberately excluded — see x-api-evangelist-provenance.
+  description: The read-only content surface Allay Therapeutics exposes at https://www.allaytx.com/wp-json.
   contact:
     name: Allay Therapeutics
     url: https://www.allaytx.com/
@@ -13,13 +13,13 @@ servers:
 - url: https://www.allaytx.com/wp-json
   description: Production content API
 tags:
-- name: comments
+- name: Comments
   description: Comment collection. Registered and anonymously reachable, but empty — X-WP-Total is 0.
 paths:
   /wp/v2/comments:
     get:
       tags:
-      - comments
+      - Comments
       operationId: listComments
       summary: List comments
       description: Lists approved comments. Registered and anonymously reachable, but empty on this deployment — `X-WP-Total` is 0.
@@ -47,6 +47,21 @@ paths:
                   type: object
 components:
   parameters:
+    Search:
+      name: search
+      in: query
+      description: Limit results to those matching a string.
+      schema:
+        type: string
+    PerPage:
+      name: per_page
+      in: query
+      description: Maximum number of items to be returned in the result set.
+      schema:
+        type: integer
+        minimum: 1
+        maximum: 100
+        default: 10
     Order:
       name: order
       in: query
@@ -65,12 +80,6 @@ components:
         type: integer
         minimum: 1
         default: 1
-    Search:
-      name: search
-      in: query
-      description: Limit results to those matching a string.
-      schema:
-        type: string
     Context:
       name: context
       in: query
@@ -82,12 +91,3 @@ components:
         - embed
         - edit
         default: view
-    PerPage:
-      name: per_page
-      in: query
-      description: Maximum number of items to be returned in the result set.
-      schema:
-        type: integer
-        minimum: 1
-        maximum: 100
-        default: 10

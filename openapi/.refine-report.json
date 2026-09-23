@@ -1,14 +1,7 @@
 {
   "provider": "allay-therapeutics",
   "sources": [
-    "allay-therapeutics-comments-api-openapi.yml",
-    "allay-therapeutics-discovery-api-openapi.yml",
-    "allay-therapeutics-media-api-openapi.yml",
-    "allay-therapeutics-oembed-api-openapi.yml",
-    "allay-therapeutics-pages-api-openapi.yml",
-    "allay-therapeutics-posts-api-openapi.yml",
-    "allay-therapeutics-search-api-openapi.yml",
-    "allay-therapeutics-taxonomy-api-openapi.yml"
+    "_original/allay-therapeutics-content-openapi.yml"
   ],
   "outputs": [
     "allay-therapeutics-comments-api-openapi.yml",
@@ -20,19 +13,25 @@
     "allay-therapeutics-search-api-openapi.yml",
     "allay-therapeutics-taxonomy-api-openapi.yml"
   ],
-  "archived": [],
+  "archived": [
+    "deleted 1 superseded output(s) from the previous generation"
+  ],
   "errors": [],
   "warnings": [],
   "notes": [
-    "allay-therapeutics-comments-api-openapi.yml: upgraded openapi 3.1.0 -> OpenAPI 3.2.0",
-    "allay-therapeutics-discovery-api-openapi.yml: upgraded openapi 3.1.0 -> OpenAPI 3.2.0",
-    "allay-therapeutics-media-api-openapi.yml: upgraded openapi 3.1.0 -> OpenAPI 3.2.0",
-    "allay-therapeutics-oembed-api-openapi.yml: upgraded openapi 3.1.0 -> OpenAPI 3.2.0",
-    "allay-therapeutics-pages-api-openapi.yml: upgraded openapi 3.1.0 -> OpenAPI 3.2.0",
-    "allay-therapeutics-posts-api-openapi.yml: upgraded openapi 3.1.0 -> OpenAPI 3.2.0",
-    "allay-therapeutics-search-api-openapi.yml: upgraded openapi 3.1.0 -> OpenAPI 3.2.0",
-    "allay-therapeutics-taxonomy-api-openapi.yml: upgraded openapi 3.1.0 -> OpenAPI 3.2.0",
-    "apis.yml register: already-registered"
+    "sourced from openapi/_original/ (1 archived document(s)); previously refined output at the top level was skipped rather than re-split",
+    "allay-therapeutics-content-openapi.yml: upgraded openapi 3.1.0 -> OpenAPI 3.2.0",
+    "superseded outputs removed: allay-therapeutics-o-embed-api-openapi.yml",
+    "apis.yml register: written (+1 apis, 8 total)"
   ],
-  "skipped": []
+  "skipped": [
+    "allay-therapeutics-comments-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "allay-therapeutics-discovery-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "allay-therapeutics-media-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "allay-therapeutics-o-embed-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "allay-therapeutics-pages-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "allay-therapeutics-posts-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "allay-therapeutics-search-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "allay-therapeutics-taxonomy-api-openapi.yml: previously refined output, superseded by openapi/_original/"
+  ]
 }

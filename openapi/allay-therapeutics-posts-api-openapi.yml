@@ -3,7 +3,7 @@ info:
   title: Allay Therapeutics Content Posts API
   version: wp/v2
   summary: Anonymously readable WordPress REST content API behind www.allaytx.com.
-  description: The read-only content surface Allay Therapeutics exposes at https://www.allaytx.com/wp-json. Allay Therapeutics is a clinical-stage biopharmaceutical company in San Jose, California and Singapore developing ultra-sustained, non-opioid analgesic products for post-surgical pain management, led by the bupivacaine-based ATX-101 implant for total knee replacement. It runs no developer program and markets no product API. This document is an API Evangelist derivation of the WordPress `wp/v2` and `oembed/1.0` route index the site publishes at /wp-json/, restricted to the operations verified to return data anonymously on 2026-08-06. Every write route, the entire plugin-administration surface, and `/wp/v2/users` are deliberately excluded — see x-api-evangelist-provenance.
+  description: The read-only content surface Allay Therapeutics exposes at https://www.allaytx.com/wp-json.
   contact:
     name: Allay Therapeutics
     url: https://www.allaytx.com/
@@ -13,13 +13,13 @@ servers:
 - url: https://www.allaytx.com/wp-json
   description: Production content API
 tags:
-- name: posts
+- name: Posts
   description: News archive — press releases, in-the-news coverage, and presentations/publications. 19 posts published at harvest time, spanning 2021-05-13 (company launch with first clinical data) through 2025-06-05 (the $57.5M Series D announcement).
 paths:
   /wp/v2/posts:
     get:
       tags:
-      - posts
+      - Posts
       operationId: listPosts
       summary: List news posts
       description: Lists published posts. On this deployment the collection is the company news archive — 19 items from the May 2021 launch through the June 2025 Series D. Paginated; `X-WP-Total` and `X-WP-TotalPages` are exposed via `Access-Control-Expose-Headers`, and a `Link` header carries `rel="next"` / `rel="prev"`.
@@ -115,7 +115,7 @@ paths:
   /wp/v2/posts/{id}:
     get:
       tags:
-      - posts
+      - Posts
       operationId: getPost
       summary: Get a single news post
       description: Retrieves one published post by numeric ID.
@@ -134,32 +134,18 @@ paths:
           $ref: '#/components/responses/PostNotFound'
 components:
   parameters:
-    Before:
-      name: before
+    Search:
+      name: search
       in: query
-      description: Limit response to posts published before a given ISO8601 compliant date.
+      description: Limit results to those matching a string.
       schema:
         type: string
-        format: date-time
-    Fields:
-      name: _fields
+    Offset:
+      name: offset
       in: query
-      description: Sparse fieldset — comma-separated list of fields to include in the response.
+      description: Offset the result set by a specific number of items.
       schema:
-        type: string
-        examples:
-        - id,date,slug,title,link
-    Context:
-      name: context
-      in: query
-      description: Scope under which the request is made; determines fields present in the response.
-      schema:
-        type: string
-        enum:
-        - view
-        - embed
-        - edit
-        default: view
+        type: integer
     Include:
       name: include
       in: query
@@ -168,38 +154,19 @@ components:
         type: array
         items:
           type: integer
-    ModifiedAfter:
-      name: modified_after
+    PerPage:
+      name: per_page
       in: query
-      description: Limit response to posts modified after a given ISO8601 compliant date.
+      description: Maximum number of items to be returned in the result set.
       schema:
-        type: string
-        format: date-time
+        type: integer
+        minimum: 1
+        maximum: 100
+        default: 10
     After:
       name: after
       in: query
       description: Limit response to posts published after a given ISO8601 compliant date.
-      schema:
-        type: string
-        format: date-time
-    Page:
-      name: page
-      in: query
-      description: Current page of the collection.
-      schema:
-        type: integer
-        minimum: 1
-        default: 1
-    Offset:
-      name: offset
-      in: query
-      description: Offset the result set by a specific number of items.
-      schema:
-        type: integer
-    ModifiedBefore:
-      name: modified_before
-      in: query
-      description: Limit response to posts modified before a given ISO8601 compliant date.
       schema:
         type: string
         format: date-time
@@ -211,6 +178,54 @@ components:
         type: array
         items:
           type: integer
+    PathId:
+      name: id
+      in: path
+      required: true
+      description: Unique identifier for the object.
+      schema:
+        type: integer
+    Context:
+      name: context
+      in: query
+      description: Scope under which the request is made; determines fields present in the response.
+      schema:
+        type: string
+        enum:
+        - view
+        - embed
+        - edit
+        default: view
+    Page:
+      name: page
+      in: query
+      description: Current page of the collection.
+      schema:
+        type: integer
+        minimum: 1
+        default: 1
+    Slug:
+      name: slug
+      in: query
+      description: Limit result set to posts with one or more specific slugs.
+      schema:
+        type: array
+        items:
+          type: string
+    ModifiedBefore:
+      name: modified_before
+      in: query
+      description: Limit response to posts modified before a given ISO8601 compliant date.
+      schema:
+        type: string
+        format: date-time
+    Before:
+      name: before
+      in: query
+      description: Limit response to posts published before a given ISO8601 compliant date.
+      schema:
+        type: string
+        format: date-time
     Order:
       name: order
       in: query
@@ -221,66 +236,30 @@ components:
         - asc
         - desc
         default: desc
-    Search:
-      name: search
+    Fields:
+      name: _fields
       in: query
-      description: Limit results to those matching a string.
+      description: Sparse fieldset — comma-separated list of fields to include in the response.
       schema:
         type: string
-    PathId:
-      name: id
-      in: path
-      required: true
-      description: Unique identifier for the object.
-      schema:
-        type: integer
-    PerPage:
-      name: per_page
+        examples:
+        - id,date,slug,title,link
+    ModifiedAfter:
+      name: modified_after
       in: query
-      description: Maximum number of items to be returned in the result set.
+      description: Limit response to posts modified after a given ISO8601 compliant date.
       schema:
-        type: integer
-        minimum: 1
-        maximum: 100
-        default: 10
-    Slug:
-      name: slug
-      in: query
-      description: Limit result set to posts with one or more specific slugs.
-      schema:
-        type: array
-        items:
-          type: string
-  responses:
-    InvalidParam:
-      description: One or more query parameters failed validation.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-          examples:
-            perPageOutOfBounds:
-              value:
-                code: rest_invalid_param
-                message: 'Invalid parameter(s): per_page'
-                data:
-                  status: 400
-                  params:
-                    per_page: per_page must be between 1 (inclusive) and 100 (inclusive)
-    PostNotFound:
-      description: No object exists with the supplied ID.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-          examples:
-            invalidPostId:
-              value:
-                code: rest_post_invalid_id
-                message: Invalid post ID.
-                data:
-                  status: 404
+        type: string
+        format: date-time
   schemas:
+    RenderedText:
+      type: object
+      properties:
+        rendered:
+          type: string
+          description: HTML for the field, transformed for display.
+        protected:
+          type: boolean
     Error:
       type: object
       description: The WordPress REST error envelope. Not RFC 9457 — the media type is application/json, and the shape is {code, message, data:{status}} with an optional data.params / data.details map on validation failures.
@@ -359,11 +338,32 @@ components:
             type: integer
         _links:
           type: object
-    RenderedText:
-      type: object
-      properties:
-        rendered:
-          type: string
-          description: HTML for the field, transformed for display.
-        protected:
-          type: boolean
+  responses:
+    InvalidParam:
+      description: One or more query parameters failed validation.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          examples:
+            perPageOutOfBounds:
+              value:
+                code: rest_invalid_param
+                message: 'Invalid parameter(s): per_page'
+                data:
+                  status: 400
+                  params:
+                    per_page: per_page must be between 1 (inclusive) and 100 (inclusive)
+    PostNotFound:
+      description: No object exists with the supplied ID.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          examples:
+            invalidPostId:
+              value:
+                code: rest_post_invalid_id
+                message: Invalid post ID.
+                data:
+                  status: 404

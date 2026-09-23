@@ -3,7 +3,7 @@ info:
   title: Allay Therapeutics Content Taxonomy API
   version: wp/v2
   summary: Anonymously readable WordPress REST content API behind www.allaytx.com.
-  description: The read-only content surface Allay Therapeutics exposes at https://www.allaytx.com/wp-json. Allay Therapeutics is a clinical-stage biopharmaceutical company in San Jose, California and Singapore developing ultra-sustained, non-opioid analgesic products for post-surgical pain management, led by the bupivacaine-based ATX-101 implant for total knee replacement. It runs no developer program and markets no product API. This document is an API Evangelist derivation of the WordPress `wp/v2` and `oembed/1.0` route index the site publishes at /wp-json/, restricted to the operations verified to return data anonymously on 2026-08-06. Every write route, the entire plugin-administration surface, and `/wp/v2/users` are deliberately excluded — see x-api-evangelist-provenance.
+  description: The read-only content surface Allay Therapeutics exposes at https://www.allaytx.com/wp-json.
   contact:
     name: Allay Therapeutics
     url: https://www.allaytx.com/
@@ -13,13 +13,13 @@ servers:
 - url: https://www.allaytx.com/wp-json
   description: Production content API
 tags:
-- name: taxonomy
+- name: Taxonomy
   description: Categories and tags. Four categories are registered — Press Releases (14), In The News (4), Presentations and Publications (1), Uncategorized (0). The post_tag taxonomy holds three unused placeholder terms (Lorem, Ipsum, Dolor), all with a count of 0.
 paths:
   /wp/v2/categories:
     get:
       tags:
-      - taxonomy
+      - Taxonomy
       operationId: listCategories
       summary: List news categories
       description: Lists category terms. Four registered — Press Releases (id 5, 14 posts), In The News (id 10, 4 posts), Presentations and Publications (id 23, 1 post), Uncategorized (id 1, 0).
@@ -57,7 +57,7 @@ paths:
   /wp/v2/categories/{id}:
     get:
       tags:
-      - taxonomy
+      - Taxonomy
       operationId: getCategory
       summary: Get a single category term
       parameters:
@@ -75,7 +75,7 @@ paths:
   /wp/v2/tags:
     get:
       tags:
-      - taxonomy
+      - Taxonomy
       operationId: listTags
       summary: List post tags
       description: Lists post_tag terms. Three placeholder terms are registered (Lorem, Ipsum, Dolor), all with a post count of 0 — the taxonomy is unused on this deployment.
@@ -103,7 +103,7 @@ paths:
   /wp/v2/tags/{id}:
     get:
       tags:
-      - taxonomy
+      - Taxonomy
       operationId: getTag
       summary: Get a single tag term
       parameters:
@@ -120,6 +120,21 @@ paths:
           $ref: '#/components/responses/TermNotFound'
 components:
   parameters:
+    Search:
+      name: search
+      in: query
+      description: Limit results to those matching a string.
+      schema:
+        type: string
+    PerPage:
+      name: per_page
+      in: query
+      description: Maximum number of items to be returned in the result set.
+      schema:
+        type: integer
+        minimum: 1
+        maximum: 100
+        default: 10
     Order:
       name: order
       in: query
@@ -138,12 +153,14 @@ components:
         type: integer
         minimum: 1
         default: 1
-    Search:
-      name: search
+    Slug:
+      name: slug
       in: query
-      description: Limit results to those matching a string.
+      description: Limit result set to posts with one or more specific slugs.
       schema:
-        type: string
+        type: array
+        items:
+          type: string
     PathId:
       name: id
       in: path
@@ -162,50 +179,21 @@ components:
         - embed
         - edit
         default: view
-    PerPage:
-      name: per_page
-      in: query
-      description: Maximum number of items to be returned in the result set.
-      schema:
-        type: integer
-        minimum: 1
-        maximum: 100
-        default: 10
-    Slug:
-      name: slug
-      in: query
-      description: Limit result set to posts with one or more specific slugs.
-      schema:
-        type: array
-        items:
-          type: string
+  responses:
+    TermNotFound:
+      description: No term exists with the supplied ID.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          examples:
+            invalidTermId:
+              value:
+                code: rest_term_invalid
+                message: Term does not exist.
+                data:
+                  status: 404
   schemas:
-    Term:
-      type: object
-      description: A taxonomy term (category or tag).
-      properties:
-        id:
-          type: integer
-        count:
-          type: integer
-        description:
-          type: string
-        link:
-          type: string
-          format: uri
-        name:
-          type: string
-        slug:
-          type: string
-        taxonomy:
-          type: string
-          enum:
-          - category
-          - post_tag
-        parent:
-          type: integer
-        _links:
-          type: object
     Error:
       type: object
       description: The WordPress REST error envelope. Not RFC 9457 — the media type is application/json, and the shape is {code, message, data:{status}} with an optional data.params / data.details map on validation failures.
@@ -232,17 +220,29 @@ components:
             details:
               type: object
               description: Per-parameter structured validation detail.
-  responses:
-    TermNotFound:
-      description: No term exists with the supplied ID.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-          examples:
-            invalidTermId:
-              value:
-                code: rest_term_invalid
-                message: Term does not exist.
-                data:
-                  status: 404
+    Term:
+      type: object
+      description: A taxonomy term (category or tag).
+      properties:
+        id:
+          type: integer
+        count:
+          type: integer
+        description:
+          type: string
+        link:
+          type: string
+          format: uri
+        name:
+          type: string
+        slug:
+          type: string
+        taxonomy:
+          type: string
+          enum:
+          - category
+          - post_tag
+        parent:
+          type: integer
+        _links:
+          type: object

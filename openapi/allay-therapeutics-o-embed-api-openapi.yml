@@ -3,7 +3,7 @@ info:
   title: Allay Therapeutics Content Oembed API
   version: wp/v2
   summary: Anonymously readable WordPress REST content API behind www.allaytx.com.
-  description: The read-only content surface Allay Therapeutics exposes at https://www.allaytx.com/wp-json. Allay Therapeutics is a clinical-stage biopharmaceutical company in San Jose, California and Singapore developing ultra-sustained, non-opioid analgesic products for post-surgical pain management, led by the bupivacaine-based ATX-101 implant for total knee replacement. It runs no developer program and markets no product API. This document is an API Evangelist derivation of the WordPress `wp/v2` and `oembed/1.0` route index the site publishes at /wp-json/, restricted to the operations verified to return data anonymously on 2026-08-06. Every write route, the entire plugin-administration surface, and `/wp/v2/users` are deliberately excluded — see x-api-evangelist-provenance.
+  description: The read-only content surface Allay Therapeutics exposes at https://www.allaytx.com/wp-json.
   contact:
     name: Allay Therapeutics
     url: https://www.allaytx.com/
@@ -13,13 +13,13 @@ servers:
 - url: https://www.allaytx.com/wp-json
   description: Production content API
 tags:
-- name: oembed
+- name: o Embed
   description: oEmbed 1.0 provider endpoint for www.allaytx.com URLs.
 paths:
   /oembed/1.0/embed:
     get:
       tags:
-      - oembed
+      - o Embed
       operationId: getOembed
       summary: Get an oEmbed response for a site URL
       description: Returns the oEmbed 1.0 representation of a www.allaytx.com permalink.

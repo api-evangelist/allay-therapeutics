@@ -3,7 +3,7 @@ info:
   title: Allay Therapeutics Content Discovery API
   version: wp/v2
   summary: Anonymously readable WordPress REST content API behind www.allaytx.com.
-  description: The read-only content surface Allay Therapeutics exposes at https://www.allaytx.com/wp-json. Allay Therapeutics is a clinical-stage biopharmaceutical company in San Jose, California and Singapore developing ultra-sustained, non-opioid analgesic products for post-surgical pain management, led by the bupivacaine-based ATX-101 implant for total knee replacement. It runs no developer program and markets no product API. This document is an API Evangelist derivation of the WordPress `wp/v2` and `oembed/1.0` route index the site publishes at /wp-json/, restricted to the operations verified to return data anonymously on 2026-08-06. Every write route, the entire plugin-administration surface, and `/wp/v2/users` are deliberately excluded — see x-api-evangelist-provenance.
+  description: The read-only content surface Allay Therapeutics exposes at https://www.allaytx.com/wp-json.
   contact:
     name: Allay Therapeutics
     url: https://www.allaytx.com/
@@ -13,13 +13,13 @@ servers:
 - url: https://www.allaytx.com/wp-json
   description: Production content API
 tags:
-- name: discovery
+- name: Discovery
   description: Route, type, taxonomy and status discovery documents.
 paths:
   /:
     get:
       tags:
-      - discovery
+      - Discovery
       operationId: getApiIndex
       summary: Get the REST API index
       description: Returns the site index — name, URL, home, the ten registered namespaces, the supported authentication methods (WordPress application passwords), the site logo and icon, and the full 196-entry route table.
@@ -42,7 +42,7 @@ paths:
   /wp/v2/types:
     get:
       tags:
-      - discovery
+      - Discovery
       operationId: listTypes
       summary: List registered post types
       description: 'Returns the registered post types keyed by slug. At harvest: post, page, attachment, nav_menu_item, wp_block, wp_template, wp_template_part, wp_global_styles, wp_navigation, wp_font_family, wp_font_face.'
@@ -58,7 +58,7 @@ paths:
   /wp/v2/types/{type}:
     get:
       tags:
-      - discovery
+      - Discovery
       operationId: getType
       summary: Get a single registered post type
       parameters:
@@ -81,7 +81,7 @@ paths:
   /wp/v2/taxonomies:
     get:
       tags:
-      - discovery
+      - Discovery
       operationId: listTaxonomies
       summary: List registered taxonomies
       description: 'Returns the registered taxonomies. At harvest: category, post_tag, nav_menu, wp_pattern_category.'
@@ -102,7 +102,7 @@ paths:
   /wp/v2/taxonomies/{taxonomy}:
     get:
       tags:
-      - discovery
+      - Discovery
       operationId: getTaxonomy
       summary: Get a single registered taxonomy
       parameters:
@@ -124,7 +124,7 @@ paths:
   /wp/v2/statuses:
     get:
       tags:
-      - discovery
+      - Discovery
       operationId: listStatuses
       summary: List registered post statuses
       description: 'Returns the publicly queryable statuses. At harvest: publish, acf-disabled.'
@@ -140,7 +140,7 @@ paths:
   /wp/v2/statuses/{status}:
     get:
       tags:
-      - discovery
+      - Discovery
       operationId: getStatus
       summary: Get a single registered post status
       parameters:
