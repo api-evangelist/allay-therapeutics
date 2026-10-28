@@ -64,5 +64,105 @@
 > Full detail: **[Where this data comes from](https://apievangelist.com/about/where-our-data-comes-from)**
 <!-- API-EVANGELIST-PROVENANCE:END -->
 
-Allay Therapeutics is a company surfaced via the API Evangelist harvest backlog (source: secondary-market) and added to the network as a stub for full-pipeline profiling.
-- https://www.nasdaqprivatemarket.com/
+Allay Therapeutics is a clinical-stage biopharmaceutical company with operations in San Jose, California and Singapore, developing ultra-sustained, non-opioid analgesic products for post-surgical pain management. Its platform is a tunable drug-biopolymer architecture that pairs validated non-opioid analgesics with dissolvable biopolymers to release pain relief at a targeted surgical site over weeks rather than days, and can be tuned for constant release (chronic pain such as osteoarthritis) or pulsed release (cyclic pain such as gout). Lead candidate ATX-101 is a bupivacaine-based implant placed directly at the surgical site during total knee replacement (TKA), targeting the three-day to two-week analgesia gap that drives breakthrough pain and opioid use; it holds FDA Breakthrough Therapy Designation and entered a pivotal Phase 2b registration trial with first patients dosed in 2025. Additional programs (ATX-201, ATX-301, ATX-401, ATX-501) span new formulations, injectables, additional clinical indications and on-demand anesthetic delivery. The company raised a $57.5M Series D plus a venture debt line in 2025 and has a development and commercialization agreement with Maruishi Pharmaceutical for Japan. It is a therapeutics developer, not a software company, and publishes no developer program, API, SDK, or machine-readable interface.
+
+**Areas:** Company · Biotechnology · Pharmaceuticals · Pain Management · Drug Delivery · Non-Opioid · Clinical Stage · Health · Life Sciences · content-api
+
+## Allay Therapeutics on APIs.io
+
+Everything profiled for Allay Therapeutics is published on APIs.io rather than in this repository. Start at the provider page — **[apis.io/providers/allay-therapeutics/](https://apis.io/providers/allay-therapeutics/)** — or go straight to one of the APIs or properties below.
+
+### APIs (1)
+
+- [Allay Therapeutics Website (WordPress REST)](https://apis.io/apis/allay-therapeutics/allaytx-com-website-wordpress-rest/) — The public WordPress REST API (wp-json) of the Allay Therapeutics website at www.allaytx.com: the route index of the site's content management system,…
+
+### Published properties
+
+Each property below is a page on APIs.io carrying the machine-readable artifact and what it says.
+
+#### Collections (8)
+
+Postman and Open Collection request collections.
+
+- [Moved to /providers/allay-therapeutics/](https://apis.io/collections/allay-therapeutics/open-allay-therapeutics-comments-api/)
+- [Moved to /providers/allay-therapeutics/](https://apis.io/collections/allay-therapeutics/open-allay-therapeutics-discovery-api/)
+- [Moved to /providers/allay-therapeutics/](https://apis.io/collections/allay-therapeutics/open-allay-therapeutics-media-api/)
+- [Moved to /providers/allay-therapeutics/](https://apis.io/collections/allay-therapeutics/open-allay-therapeutics-oembed-api/)
+- [Moved to /providers/allay-therapeutics/](https://apis.io/collections/allay-therapeutics/open-allay-therapeutics-pages-api/)
+- [Moved to /providers/allay-therapeutics/](https://apis.io/collections/allay-therapeutics/open-allay-therapeutics-posts-api/)
+- [Moved to /providers/allay-therapeutics/](https://apis.io/collections/allay-therapeutics/open-allay-therapeutics-search-api/)
+- [Moved to /providers/allay-therapeutics/](https://apis.io/collections/allay-therapeutics/open-allay-therapeutics-taxonomy-api/)
+
+#### Overlays (1)
+
+OpenAPI overlays, including conversational phrasing for each operation.
+
+- [Allay Therapeutics Content Overlay](https://apis.io/overlays/allay-therapeutics/allay-therapeutics-content-overlay/)
+
+#### Security (2)
+
+Authentication, trust centre, and vulnerability disclosure.
+
+- [Allay Therapeutics Authentication](https://apis.io/security/allay-therapeutics/allay-therapeutics-authentication/)
+- [Allay Therapeutics Domain Security](https://apis.io/security/allay-therapeutics/allay-therapeutics-domain-security/)
+
+## Where to find this API
+
+Links to the company's own pages. This repository publishes no copy of their specifications — the canonical document is theirs and lives at the URLs below.
+
+- [Website](https://www.allaytx.com/)
+- [Terms of service](https://www.allaytx.com/terms-of-service/)
+- [Privacy policy](https://www.allaytx.com/privacy-policy/)
+
+## API Evangelist rating
+
+**Kin Score 16.3** — emerging · rubric 0.24.0 · scored 2026-10-17
+
+| Facet | Score |
+|---|---|
+| Discoverability | 58.0 |
+| Contract quality | 0.0 |
+| Contract governance | 4.5 |
+| Operational transparency | 0.0 |
+| Developer ergonomics | 23.2 |
+| Access clarity | 21.1 |
+
+**Agent readiness 4.1** — human-only
+
+| Agent-readiness dimension | Result |
+|---|---|
+| Spec Presence | — |
+| Agentic Access | — |
+| Reversibility Documented | — |
+| MCP Server | — |
+| Auth Clarity | bearer (partial credit) |
+| Idempotency | — |
+| Error Semantics | derived (partial credit) |
+| OpenAPI Examples | — |
+| Rate Limit Signal | — |
+| Event Surface Described | — |
+| Agent Skills | derived (partial credit) |
+| Well Known Catalog | — |
+| Consent Identity | — |
+| Agent Card | — |
+| Dry Run Mode | — |
+| Delegated Identity | — |
+| Protected Resource Metadata | — |
+| Dynamic Client Registration | — |
+| Agentic Commerce | — |
+
+**Regulatory alignment 19.5** — Health
+
+The rubric is published at [github.com/api-evangelist/kin-score](https://github.com/api-evangelist/kin-score). The per-check breakdown behind these numbers — which checks were earned, partial or missed — along with score history and how this provider compares to its peers, is available at [apis.io/providers/allay-therapeutics/](https://apis.io/providers/allay-therapeutics/).
+
+## How this profile is made
+
+API Evangelist profiles a company's public API surface the way a developer would find it: the website, developer portal and documentation, the specifications it publishes, its public repositories, and its pricing, status and changelog pages. From that it derives the properties above — contracts split per API, workflows, schemas, collections, governance rules, plans and rate limits — and scores them against the published [Kin Score rubric](https://github.com/api-evangelist/kin-score).
+
+The artifacts are published on [APIs.io](https://apis.io), not in this repository. This repository is the public record for Allay Therapeutics: the place to say something is wrong, missing or out of date, and to ask for a re-score or a removal.
+
+## Open an issue
+
+- **Something about this listing** — a wrong description, a missing API, a stale artifact or a question about the rating: [open an issue on this repository](https://github.com/api-evangelist/allay-therapeutics/issues/new).
+- **A new API, or one that is not in the catalog yet** — [submit it on APIs.io](https://apis.io/add/).
+- **Anything else** — [the APIs.io inbox](https://github.com/api-search/inbox/issues/new) or [info@apievangelist.com](mailto:info@apievangelist.com).
